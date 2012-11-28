@@ -1,8 +1,5 @@
 package server;
 
-import gui.Critter;
-import gui.World;
-
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,10 +15,7 @@ import java.rmi.server.UnicastRemoteObject;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-import student.Interpreter;
-
 public class AdminServerImpl implements AdminServer {
-	World w;
 
 	/**
 	 * @param args
@@ -92,9 +86,8 @@ public class AdminServerImpl implements AdminServer {
 	@Override
 	public String uploadCritter(String critterFileContent)
 			throws RemoteException {
-		Critter c = Interpreter.importCritter(critterFileContent);
-		w.addInhabitant(c);
-		return c.toString();
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override

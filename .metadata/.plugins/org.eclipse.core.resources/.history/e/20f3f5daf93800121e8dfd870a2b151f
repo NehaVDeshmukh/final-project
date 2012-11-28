@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.Scanner;
 
 import gui.Critter;
@@ -77,41 +76,6 @@ public class Interpreter {
 			for (int j = 0; j < 5; j++) {
 				String s = r.readLine();
 				l = s.split(" ");
-				if (j != 5)
-					m[j] = Integer.parseInt(l[l.length - 1]);
-				else
-					m[8] = Integer.parseInt(l[l.length - 1]);
-			}
-			try {
-				c = new Critter(m, null);
-				Program p = ParserFactory.getParser().parse(r);
-				c.addProgram(p);
-			} catch (Exception e) {
-				c = null;
-			}
-		} catch (IOException e1) {
-			c = null;
-		}
-		return c;
-	}
-	
-	public static Critter importCritter(String s){
-		Critter c;
-		int[] m;
-		String[] l;
-		int i;
-
-		BufferedReader r = new BufferedReader(new StringReader(s));
-		try {
-			l = r.readLine().split(" ");
-
-			i = Integer.parseInt(l[l.length - 1]);
-			m = new int[i];
-			m[0] = i;
-
-			for (int j = 0; j < 5; j++) {
-				String str = r.readLine();
-				l = str.split(" ");
 				if (j != 5)
 					m[j] = Integer.parseInt(l[l.length - 1]);
 				else

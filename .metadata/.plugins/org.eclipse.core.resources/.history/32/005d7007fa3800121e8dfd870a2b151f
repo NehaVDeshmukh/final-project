@@ -95,7 +95,7 @@ public class Interpreter {
 		return c;
 	}
 	
-	public static Critter importCritter(String s){
+	public static Critter importCritter(String s) throws FileNotFoundException {
 		Critter c;
 		int[] m;
 		String[] l;

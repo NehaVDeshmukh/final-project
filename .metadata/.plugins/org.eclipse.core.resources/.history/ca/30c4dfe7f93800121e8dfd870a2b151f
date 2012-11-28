@@ -95,7 +95,7 @@ public class Interpreter {
 		return c;
 	}
 	
-	public static Critter importCritter(String s){
+	public static Critter importCritter(String s) throws FileNotFoundException {
 		Critter c;
 		int[] m;
 		String[] l;
@@ -110,8 +110,8 @@ public class Interpreter {
 			m[0] = i;
 
 			for (int j = 0; j < 5; j++) {
-				String str = r.readLine();
-				l = str.split(" ");
+				String s = r.readLine();
+				l = s.split(" ");
 				if (j != 5)
 					m[j] = Integer.parseInt(l[l.length - 1]);
 				else
