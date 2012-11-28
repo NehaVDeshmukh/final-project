@@ -22,32 +22,33 @@ import student.Interpreter;
 
 public class AdminServerImpl implements AdminServer {
 	World w;
+	boolean running = false;
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
+
 		// Bind an object of interface type Server to this computer's registry
 		try {
 			Runtime.getRuntime().exec("rmiregistry");
 		} catch (IOException e) {
 			System.err.println("RMIRegistry Error " + e.toString());
 		}
-		try {	
+		try {
 			Server obj = new AdminServerImpl();
-		    Server stub = (Server) UnicastRemoteObject.exportObject(obj, 0);
+			Server stub = (Server) UnicastRemoteObject.exportObject(obj, 0);
 
-		    // Bind the remote object's stub in the registry
-		    Registry registry = LocateRegistry.getRegistry();
-		    registry.bind("Server", stub);
-		    System.err.println("Server ready");
+			// Bind the remote object's stub in the registry
+			Registry registry = LocateRegistry.getRegistry();
+			registry.bind("Server", stub);
+			System.err.println("Server ready");
 		} catch (RemoteException re) {
 			System.err.println("Remote Server Exception: " + re.toString());
 		} catch (AlreadyBoundException abe) {
 			System.err.println("Server Binding Exception: " + abe.toString());
 		}
-		
+
 		// A button to terminate the server once it is no longer needed
 		JFrame frame = new JFrame();
 		JButton unbind = new JButton("Terminate Server");
@@ -76,19 +77,19 @@ public class AdminServerImpl implements AdminServer {
 				}
 				System.exit(0);
 			}
-			
+
 		});
 		frame.add(unbind);
 		frame.setSize(new Dimension(200, 200));
 		frame.setVisible(true);
 	}
-	
+
 	public AdminServerImpl() {
 		// Register the location of the codebase with your rmi registry
-		System.setProperty("java.rmi.server.codebase", 
-				AdminServerImpl.class.getProtectionDomain().getCodeSource().getLocation().toString());
+		System.setProperty("java.rmi.server.codebase", AdminServerImpl.class
+				.getProtectionDomain().getCodeSource().getLocation().toString());
 	}
-	
+
 	@Override
 	public String uploadCritter(String critterFileContent)
 			throws RemoteException {
@@ -99,14 +100,12 @@ public class AdminServerImpl implements AdminServer {
 
 	@Override
 	public int maxColumn() throws RemoteException {
-		// TODO Auto-generated method stub
-		return 0;
+		return w.MAX_COLUMN;
 	}
 
 	@Override
 	public int maxRow() throws RemoteException {
-		// TODO Auto-generated method stub
-		return 0;
+		return w.MAX_ROW;
 	}
 
 	@Override
@@ -118,8 +117,7 @@ public class AdminServerImpl implements AdminServer {
 
 	@Override
 	public boolean isRunning() throws RemoteException {
-		// TODO Auto-generated method stub
-		return false;
+		return running;
 	}
 
 	@Override
@@ -148,26 +146,58 @@ public class AdminServerImpl implements AdminServer {
 
 	@Override
 	public String getCritterProgram(int id) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		Critter c = getCritter(id);
+		StringBuffer sb = new StringBuffer();
+		c.getProgram().prettyPrint(sb);
+		return sb.toString();
 	}
 
 	@Override
 	public int[] getCritterMemory(int id) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		Critter c = getCritter(id);
+		return c.getMem();
 	}
 
 	@Override
 	public String getCritterCurrentRule(int id) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		Critter c = getCritter(id);
+		StringBuffer sb = new StringBuffer();
+		c.getCurrentRule().prettyPrint(sb);
+		return sb.toString();
 	}
 
 	@Override
 	public Action getCritterAction(int id) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		Critter c = getCritter(id);
+		if (!c.equals(w.selectedInhabitant()))
+			return null;
+
+		int i = w.getAction();
+
+		switch (i) {
+		case 0:
+			return Action.WAIT;
+		case 1:
+			return Action.FORWARD;
+		case 2:
+			return Action.BACKWARD;
+		case 3:
+			return Action.LEFT;
+		case 4:
+			return Action.RIGHT;
+		case 5:
+			return Action.EAT;
+		case 6:
+			return Action.ATTACK;
+		case 8:
+			return Action.GROW;
+		case 9:
+			return Action.BUD;
+		case 10:
+			return Action.MATE;
+		default:
+			return null;
+		}
 	}
 
 	@Override
@@ -259,6 +289,7 @@ public class AdminServerImpl implements AdminServer {
 
 	@Override
 	public void kill(int id) throws RemoteException {
+		Critter c = getCritter(id);
 		// TODO Auto-generated method stub
 
 	}
@@ -359,4 +390,8 @@ public class AdminServerImpl implements AdminServer {
 
 	}
 
+	private Critter getCritter(int id) {
+		// TODO
+		return null;
+	}
 }

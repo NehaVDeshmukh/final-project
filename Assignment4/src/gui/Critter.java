@@ -460,4 +460,12 @@ public class Critter implements Inhabitant {
 		selectRule();
 		Interpreter.execute(cur, new State(world, this));
 	}
+	
+	public Program getProgram() {
+		return prog;
+	}
+	
+	public int[] getMem() {
+		return mem;
+	}
 }

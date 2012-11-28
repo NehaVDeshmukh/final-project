@@ -39,7 +39,7 @@ public class Interpreter {
 		Scanner r = new Scanner(f);
 		String[] l;
 
-		World w = new World();
+		World w = new World(22, 21);
 
 		while (r.hasNext()) {
 			l = r.nextLine().split(" ");

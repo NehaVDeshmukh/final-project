@@ -29,7 +29,7 @@ public class WorldCanvas extends HexGridCanvas2 {
 	 */
 	public WorldCanvas() {
 		super(700, 21, 22);
-		world = new World();
+		world = new World(22, 21);
 		world.setRadius(radius);
 		xTrans = 0;
 		yTrans = 0;
@@ -47,7 +47,7 @@ public class WorldCanvas extends HexGridCanvas2 {
 
 	public WorldCanvas(int w, int h, int c, int r) {
 		super(w, h, c, r);
-		world = new World();
+		world = new World(r, c);
 		xTrans = 0;
 		yTrans = 0;
 		try {

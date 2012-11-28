@@ -6,6 +6,7 @@ import java.util.Random;
 public class World {
 	static int time = 0;
 	double radius = 0;
+	public final int MAX_ROW, MAX_COLUMN;
 
 	enum Thing {
 		FOOD, CRITTER, ROCK, PLANT, EMPTY
@@ -17,8 +18,15 @@ public class World {
 	private boolean wait = true;
 	private int inAct;
 
-	public World() {
+	/**
+	 * creates a new row with r rows and c columns
+	 * @param r
+	 * @param c
+	 */
+	public World(int r, int c) {
 		inhabitants = new ArrayList<Inhabitant>();
+		MAX_ROW = r-1;
+		MAX_COLUMN = c-1;
 	}
 
 	/**
@@ -208,5 +216,9 @@ public class World {
 		for (Inhabitant i : inhabitants) {
 			i.getLocation().setRadius(r);
 		}
+	}
+	
+	public int getAction() {
+		return inAct;
 	}
 }
