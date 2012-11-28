@@ -1,0 +1,6 @@
+memsize: 9
+defense: 5
+offense: 5
+size: 1
+energy: 1000
+posture: 0

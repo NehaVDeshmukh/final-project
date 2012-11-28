@@ -1,0 +1,55 @@
+Metadata
+	Parsing and False Injection
+	Hyung Won (Scarlet) Yang - hy323
+	Laura Herrle - lmh95
+	main class : Main.java
+		-takes arguments <input_file> or --mutate <n> <input_file>
+
+Summary (50–300 words)
+	The input is translated into Tokens using tokenizer.
+	The abstract syntax tree is made up of objects of type Node, which are constructed using tokens.
+	The program parses a program in the critter language to it's unique AST.  It is also able to mutate the critter program.
+	One of the major problems was figuring out how to get a reference to the final  program containing the node in the node.  We accomplished this by adding the reference to each node after the program was parsed, by adding a method to the Node interface.
+
+-
+
+Specification (10–500 words)
+	pass tokens to each of the constructors to make each node.
+	The AST correctly and thoroughly represents a program constructed from the critter grammar.
+
+	After construction, the AST is immutable except by calls to the mutate() method.
+
+-
+
+Design and Implementation (150–1000 words)
+
+    Programming:
+	Scarlet programs top-down starting from JUnitTest, Main, and the parser, and Laura programs bottom-up by implementing nodes and the AST.  Before starting, we collaborated on specs (for example, for the constructors of nodes) to make sure that our individual parts would fit together at the end.  We designed the overall implementation of the parser and AST together.  
+-
+
+Testing (150–1000 words)
+
+pretty printed input file is well tokenized.
+
+mem[5]=1 --> mem[6] := mem[4]
+	     mem[5] := 2; food < 6 --> mem[5]:=1
+             eat; food mod 6 <= 3 --> right; food mod 6 >= 3 --> 
+left; ahead[1] = 0 --> forward;
+
+is translated as
+
+mem[5]=1-->mem[6]:=mem[4]mem[5]:=2;
+mem[6]mod1000<6-->mem[5]:=1eat;
+mem[mem[3]+10]mod6<=3-->right;
+mem[8]mod6>=3-->left;
+ahead[1]=0-->forward;
+
+-
+
+Known problems (1–500 words)
+	none yet
+
+-
+
+Comments (1–200 words)
+This project was surprisingly less difficult than we anticipated.  We ran into less problems than we anticipated while debugging and the ones we ran in to were generally very minor and easily isolated and fixed.  The grammar was slightly hard to understand - We heard different versions of what parts were literals (the brackets and parentheses in particular were often interpreted both ways).
