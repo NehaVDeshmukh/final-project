@@ -17,15 +17,12 @@ import java.rmi.server.UnicastRemoteObject;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.Timer;
 
 import student.Interpreter;
 
 public class AdminServerImpl implements AdminServer {
 	World w;
 	boolean running = false;
-	Timer t;
-	int delay = 1000000;
 
 	/**
 	 * @param args
@@ -91,12 +88,6 @@ public class AdminServerImpl implements AdminServer {
 		// Register the location of the codebase with your rmi registry
 		System.setProperty("java.rmi.server.codebase", AdminServerImpl.class
 				.getProtectionDomain().getCodeSource().getLocation().toString());
-		t = new Timer(0, new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				w.stepTime();
-			}
-		});
-		t.setDelay(delay);
 	}
 
 	@Override
@@ -259,17 +250,20 @@ public class AdminServerImpl implements AdminServer {
 
 	@Override
 	public void simStep() throws RemoteException {
-		w.stepTime();
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public void startSim() throws RemoteException {
-		t.start();
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public void pauseSim() throws RemoteException {
-		t.stop();
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
@@ -280,8 +274,8 @@ public class AdminServerImpl implements AdminServer {
 
 	@Override
 	public void setSimRate(long rate) throws RemoteException {
-		int i = (int) ((60/rate) * 1000);
-		delay = i;
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
@@ -293,7 +287,8 @@ public class AdminServerImpl implements AdminServer {
 	@Override
 	public void kill(int id) throws RemoteException {
 		Critter c = getCritter(id);
-		//TODO
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override

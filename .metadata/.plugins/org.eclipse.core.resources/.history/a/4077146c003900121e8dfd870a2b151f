@@ -67,6 +67,12 @@ public class Plant implements Inhabitant {
 	@Override
 	public void addWorld(World w) {
 		world = w;
+		try {
+			world.newThing(Thing.PLANT, loc);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		world.inhabitants.add(this);
 	}
 

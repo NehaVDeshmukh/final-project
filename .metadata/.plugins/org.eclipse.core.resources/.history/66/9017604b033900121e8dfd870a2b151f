@@ -2,8 +2,8 @@ package gui;
 
 public class Location {
 
-	public int col;
-	public int row;
+	int col;
+	int row;
 	double radius;
 
 	/**
@@ -85,40 +85,7 @@ public class Location {
 		return new Coordinate(new Location(c,r,radius), height);
 	}
 	
-	public String toString() 
-	{
+	public String toString() {
 		return("(" + col + "," + row + ")");
-	}
-	public Location getLocationAt(int dir)
-	{
-		int c=0, r=0;
-		switch(dir)
-		{
-		case 0:
-			c = col;
-			r = row+1;
-			break;
-		case 1:
-			c = col;
-			r = row+1;
-			break;
-		case 2:
-			c = col;
-			r = row;
-			break;
-		case 3:
-			c = col;
-			r = row -1;
-			break;
-		case 4:
-			c = col-1;
-			r = row -1;
-			break;
-		case 5:
-			c = col-1;
-			r = row;
-			break;
-		}
-		return new Location(c, r, radius);
 	}
 }

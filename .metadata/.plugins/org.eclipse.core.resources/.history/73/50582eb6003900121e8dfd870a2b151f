@@ -388,6 +388,11 @@ public class Critter implements Inhabitant {
 
 	public void addWorld(World w) {
 		world = w;
+		try {
+			world.newThing(Thing.CRITTER, loc);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+		}
 		w.inhabitants.add(this);
 	}
 

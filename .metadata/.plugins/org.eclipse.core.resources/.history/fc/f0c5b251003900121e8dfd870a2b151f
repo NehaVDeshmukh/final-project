@@ -17,8 +17,6 @@ public class World {
 	private Critter in;
 	private boolean wait = true;
 	private int inAct;
-	int numCritters = 0;
-	int numPlants = 0;
 
 	/**
 	 * creates a new row with r rows and c columns
@@ -49,6 +47,21 @@ public class World {
 		// TODO
 		Thing thing = Thing.EMPTY;
 		return thing;
+	}
+
+	/**
+	 * places a new Thing in the given location
+	 * 
+	 * @throws Exception
+	 *             if the given tile is not empty
+	 * */
+	public void newThing(Thing t, Location loc) throws Exception {
+		if (!isEmpty(loc))
+			throw new Exception("the location is not empty");
+
+		switch (t) {
+		case CRITTER:
+		}
 	}
 
 	/**
@@ -136,10 +149,6 @@ public class World {
 	public void addInhabitant(Inhabitant i) {
 		i.addWorld(this);
 		i.getLocation().setRadius(radius);
-		if(i instanceof Critter)
-			numCritters ++;
-		if(i instanceof Plant)
-			numPlants ++;
 	}
 
 	/**
@@ -211,17 +220,5 @@ public class World {
 	
 	public int getAction() {
 		return inAct;
-	}
-	
-	public int time() {
-		return time;
-	}
-	
-	public int critters() {
-		return numCritters;
-	}
-	
-	public int plants() {
-		return numPlants;
 	}
 }

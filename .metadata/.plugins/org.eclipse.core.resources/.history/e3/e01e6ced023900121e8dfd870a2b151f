@@ -293,7 +293,8 @@ public class AdminServerImpl implements AdminServer {
 	@Override
 	public void kill(int id) throws RemoteException {
 		Critter c = getCritter(id);
-		//TODO
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
