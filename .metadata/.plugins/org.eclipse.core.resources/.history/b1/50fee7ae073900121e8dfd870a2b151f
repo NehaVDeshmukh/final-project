@@ -29,18 +29,12 @@ public class Main {
 			for (int i = 0; i < 75; i++) {
 				Location l = new Location(r.nextInt(21), r.nextInt(22));
 				if (g.c.world.isEmpty(l)) {
-					switch (r.nextInt(4)) {
+					switch (r.nextInt(2)) {
 					case 0:
 						g.addInhabitant(new Rock(l));
 						break;
 					case 1:
 						g.addInhabitant(new Plant(l));
-						break;
-					case 2:
-						g.addInhabitant(new Critter(9, l));
-						break;
-					case 3:
-						g.addInhabitant(new Food(l, 100));
 						break;
 					}
 				}

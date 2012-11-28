@@ -26,10 +26,7 @@ public class GridListener implements MouseInputListener {
 		Location loc = Coordinate.getLocation3(x, y, world.p, (int) world.radius);
 		world.world.setSelectedLocation(loc);
 		System.out.println(world.world.selectedInhabitant());
-		System.out.println(world.world.selected);
-		System.out.println(world.world.containsRock(loc));
-		if(world.world.selectedInhabitant()!=null)
-			System.out.println(new State(world.world, world.world.selectedInhabitant()).getFood());
+		System.out.println(new State(world.world, world.world.selectedInhabitant()).getFood());
 		world.repaint(x-rad,y-rad,2*rad,2*rad);
 		world.repaint(pastClick.x-rad,pastClick.y-rad,2*rad,2*rad);
 		pastClick = new Point(x,y);

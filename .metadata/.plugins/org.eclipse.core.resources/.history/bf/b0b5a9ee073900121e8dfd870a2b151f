@@ -388,6 +388,7 @@ public class Critter implements Inhabitant {
 
 	public void addWorld(World w) {
 		world = w;
+		w.inhabitants.add(this);
 	}
 
 	@Override

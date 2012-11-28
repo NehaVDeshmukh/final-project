@@ -67,6 +67,7 @@ public class Plant implements Inhabitant {
 	@Override
 	public void addWorld(World w) {
 		world = w;
+		world.inhabitants.add(this);
 	}
 
 	@Override

@@ -97,13 +97,12 @@ public class World {
 
 	public void setSelectedLocation(Location l) {
 		selected = l;
-		selectInhabitant(l);
-	}
-	
-	private void selectInhabitant(Location l) {
-		Critter c = this.containsCritter(l);
-		if(c!=null)
-			in = c;
+		for (Inhabitant i : inhabitants) {
+			if (i.getLocation().equals(l)) {
+				if (i instanceof Critter)
+					in = (Critter) i;
+			}
+		}
 	}
 
 	/**

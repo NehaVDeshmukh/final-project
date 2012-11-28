@@ -1,6 +1,6 @@
 package gui;
 
-public class Location{
+public class Location {
 
 	public int col;
 	public int row;
@@ -120,16 +120,5 @@ public class Location{
 			break;
 		}
 		return new Location(c, r, radius);
-	}
-	
-	@Override
-	public boolean equals(Object o) {
-		if(!(o instanceof Location))
-			return false;
-		Location l = (Location) o;
-		if(this.col==l.col && this.row==l.row)
-			return true;
-		
-		return false;
 	}
 }
