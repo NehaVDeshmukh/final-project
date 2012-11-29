@@ -13,11 +13,9 @@ public class GridListener implements MouseInputListener {
 	private Point origin, end;
 	private WorldCanvas world;
 	private Point pastClick = new Point(0,0);
-	private GUI g;
 
-	public GridListener(WorldCanvas w, GUI gui) {
+	public GridListener(WorldCanvas w) {
 		world = w;
-		g = gui;
 	}
 
 	@Override
@@ -30,14 +28,12 @@ public class GridListener implements MouseInputListener {
 		System.out.println(world.world.selectedInhabitant());
 		System.out.println(world.world.selected);
 		System.out.println(world.world.containsRock(loc));
-		if(world.world.selectedInhabitant()!=null) {
+		if(world.world.selectedInhabitant()!=null)
 			System.out.println(new State(world.world, world.world.selectedInhabitant()).getFood());
-			g.updateStats(world.world.selectedInhabitant());
-		}
 		world.repaint(x-rad,y-rad,2*rad,2*rad);
 		world.repaint(pastClick.x-rad,pastClick.y-rad,2*rad,2*rad);
 		pastClick = new Point(x,y);
-		System.out.println("click");		
+		System.out.println("click");
 	}
 
 	@Override

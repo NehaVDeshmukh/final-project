@@ -55,7 +55,7 @@ public class GUI extends JPanel {
 		file = new JFileChooser();
 		this.setLayout(new FlowLayout());
 		c = new WorldCanvas();
-		GridListener g = new GridListener(c, this);
+		GridListener g = new GridListener(c);
 		c.addMouseListener(g);
 		c.addMouseMotionListener(g);
 		left = new JPanel();
@@ -263,15 +263,5 @@ public class GUI extends JPanel {
 	public void addInhabitant(Inhabitant i) {
 		c.world.addInhabitant(i);
 		c.repaint();
-	}
-	
-	public void updateStats(Critter c) {
-		size.setText("Size: " + c.mem[3]);
-		complexity.setText("Complexity: " + c.complexity);
-		offense.setText("Offense: " + c.mem[2]);
-		defense.setText("Defense: " + c.mem[1]);
-		thisTag.setText("Tag: " + c.mem[7]);
-		posture.setText("Posture: " + c.mem[8]);
-		events.setText("Events: " + c.mem[6]);
 	}
 }

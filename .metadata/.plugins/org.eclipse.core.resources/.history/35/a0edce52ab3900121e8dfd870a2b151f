@@ -55,7 +55,7 @@ public class GUI extends JPanel {
 		file = new JFileChooser();
 		this.setLayout(new FlowLayout());
 		c = new WorldCanvas();
-		GridListener g = new GridListener(c, this);
+		GridListener g = new GridListener(c);
 		c.addMouseListener(g);
 		c.addMouseMotionListener(g);
 		left = new JPanel();
