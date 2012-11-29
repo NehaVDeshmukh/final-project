@@ -16,12 +16,4 @@ public interface PlayerServer extends Server {
 	 * @throws RemoteException
 	 */
 	public String uploadCritter(String critterFileContent) throws RemoteException;
-	
-	/*
-	 * so, plan... that I came up with after almost fully implementing this...
-	 * instantiate all PlayerServer objects as AdminServerImpl objects.
-	 * but only the PlayerServer operations will be visible, obviously.
-	 * yay me.
-	 * But, yeah, Scarlet, there isn't a class missing. IT'S THE PLAN.
-	 */
 }

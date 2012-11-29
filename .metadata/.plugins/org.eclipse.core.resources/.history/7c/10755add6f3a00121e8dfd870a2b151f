@@ -1,0 +1,117 @@
+package server;
+
+import java.rmi.RemoteException;
+
+public class PlayerServerImpl implements PlayerServer {
+	AdminServerImpl server;
+
+	public PlayerServerImpl() {
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public int maxColumn() throws RemoteException {
+		return server.maxColumn();
+	}
+
+	@Override
+	public int maxRow() throws RemoteException {
+		return server.maxRow();
+	}
+
+	@Override
+	public Cell[] getSubsection(int llCol, int llRow, int numCols, int numRows)
+			throws RemoteException {
+		return server.getSubsection(llCol, llRow, numCols, numRows);
+	}
+
+	@Override
+	public boolean isRunning() throws RemoteException {
+		return server.isRunning();
+	}
+
+	@Override
+	public long getSimRate() throws RemoteException {
+		return server.getSimRate();
+	}
+
+	@Override
+	public int stepsCount() throws RemoteException {
+		return server.stepsCount();
+	}
+
+	@Override
+	public int numCritters() throws RemoteException {
+		return server.numCritters();
+	}
+
+	@Override
+	public int numPlants() throws RemoteException {
+		return server.numPlants();
+	}
+
+	@Override
+	public String getCritterProgram(int id) throws RemoteException {
+		return server.getCritterProgram(id);
+	}
+
+	@Override
+	public int[] getCritterMemory(int id) throws RemoteException {
+		return server.getCritterMemory(id);
+	}
+
+	@Override
+	public String getCritterCurrentRule(int id) throws RemoteException {
+		return server.getCritterCurrentRule(id);
+	}
+
+	@Override
+	public Action getCritterAction(int id) throws RemoteException {
+		return server.getCritterAction(id);
+	}
+
+	@Override
+	public String requestUserAcc(String user, String pw) throws RemoteException {
+		return server.requestUserAcc(user, pw);
+	}
+
+	@Override
+	public String requestAdminAcc(String user, String pw)
+			throws RemoteException {
+		return server.requestAdminAcc(user, pw);
+	}
+
+	@Override
+	public PlayerServer getPlayerServer(String user, String pw)
+			throws RemoteException {
+		return server.getPlayerServer(user, pw);
+	}
+
+	@Override
+	public AdminServer getAdminServer(String user, String pw)
+			throws RemoteException {
+		return server.getAdminServer(user, pw);
+	}
+
+	@Override
+	public int[] getSpeciesAttributes(int species_id) throws RemoteException {
+		return server.getSpeciesAttributes(species_id);
+	}
+
+	@Override
+	public String getSpeciesProgram(int species_id) throws RemoteException {
+		return server.getSpeciesProgram(species_id);
+	}
+
+	@Override
+	public int[] getLineage(int species_id) throws RemoteException {
+		return server.getLineage(species_id);
+	}
+
+	@Override
+	public String uploadCritter(String critterFileContent)
+			throws RemoteException {
+		return server.uploadCritter(critterFileContent);
+	}
+
+}
