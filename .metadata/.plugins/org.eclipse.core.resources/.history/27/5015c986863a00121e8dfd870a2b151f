@@ -57,7 +57,7 @@ public class Cell implements Serializable {
 	public int critSize() { return critSize; }
 	public int critDirection() { return critDirection; }
 	public int critAppearance() { return critAppearance; }
-	public int getFood() { return 0; }//TODO 
+	public int getFood() { return 0; //TODO }
 
 	private static final long serialVersionUID = 6238531172449664193L;
 }
