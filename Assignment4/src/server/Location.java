@@ -6,7 +6,7 @@ public class Location{
 
 	public int col;
 	public int row;
-	double radius;
+	private double radius;
 
 	/**
 	 * Creates a new location on a HexGrid
@@ -16,7 +16,7 @@ public class Location{
 	public Location(int c, int r) {
 		col = c;
 		row = r;
-		radius = 0;
+		setRadius(0);
 	}
 
 	/**
@@ -28,7 +28,7 @@ public class Location{
 	public Location(int c, int r, double radius) {
 		col = c;
 		row = r;
-		this.radius = radius;
+		this.setRadius(radius);
 	}
 
 	/**
@@ -50,7 +50,7 @@ public class Location{
 	public void setLocation(int c, int r, double radius) {
 		col = c;
 		row = r;
-		this.radius = radius;
+		this.setRadius(radius);
 	}
 
 	/**
@@ -121,7 +121,7 @@ public class Location{
 			r = row;
 			break;
 		}
-		return new Location(c, r, radius);
+		return new Location(c, r, getRadius());
 	}
 	
 	@Override
@@ -133,5 +133,12 @@ public class Location{
 			return true;
 		
 		return false;
+	}
+
+	/**
+	 * @return the radius
+	 */
+	public double getRadius() {
+		return radius;
 	}
 }

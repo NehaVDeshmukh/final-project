@@ -36,14 +36,14 @@ public class Critter implements Inhabitant {
 	 * */
 	int[] mem;
 	Location loc;
-	Direction dir;
+	private Direction dir;
 	Program prog;
-	int complexity;
+	private int complexity;
 	Action[] act;
 	World world;
 	int ID;
 	Color color;
-	int species;
+	private int species;
 	Rule cur;
 
 	enum Action {
@@ -69,7 +69,7 @@ public class Critter implements Inhabitant {
 	 * @param loc
 	 * @throws Exception
 	 */
-	Critter(int memsize, Location loc) throws Exception {
+	public Critter(int memsize, Location loc) throws Exception {
 		this(memsize, loc, Direction.ZERO, 0);
 	}
 
@@ -92,7 +92,7 @@ public class Critter implements Inhabitant {
 		this.loc = loc;
 		this.dir = dir;
 		mem[3] = 1;
-		this.species = species;
+		this.setSpecies(species);
 	}
 
 	/**
@@ -306,7 +306,7 @@ public class Critter implements Inhabitant {
 		}
 		mem[4] -= energyBud();
 		try {
-			Critter cr = new Critter(9, Direction.getFacingTile(Direction.THREE, loc), dir, species);
+			Critter cr = new Critter(9, Direction.getFacingTile(Direction.THREE, loc), dir, getSpecies());
 			cr.addProgram((Program) prog.mutate());
 			world.addInhabitant(cr);
 		} catch (Exception e) {
@@ -324,7 +324,7 @@ public class Critter implements Inhabitant {
 			mem[4] -= energyMate();
 			try {
 				Critter cr = new Critter(9, Direction.getFacingTile(
-						dir.left(), loc), dir, (int) (species + c.species) / 2);
+						dir.left(), loc), dir, (int) (getSpecies() + c.getSpecies()) / 2);
 				cr.addProgram(new Program(prog.getRules()));
 				world.addInhabitant(cr);
 			} catch (Exception e) {
@@ -462,5 +462,47 @@ public class Critter implements Inhabitant {
 	
 	public int[] getMem() {
 		return mem;
+	}
+
+	/**
+	 * @return the complexity
+	 */
+	public int getComplexity() {
+		return complexity;
+	}
+
+	/**
+	 * @param complexity the complexity to set
+	 */
+	public void setComplexity(int complexity) {
+		this.complexity = complexity;
+	}
+
+	/**
+	 * @return the species
+	 */
+	public int getSpecies() {
+		return species;
+	}
+
+	/**
+	 * @param species the species to set
+	 */
+	public void setSpecies(int species) {
+		this.species = species;
+	}
+
+	/**
+	 * @return the dir
+	 */
+	public Direction getDir() {
+		return dir;
+	}
+
+	/**
+	 * @param dir the dir to set
+	 */
+	public void setDir(Direction dir) {
+		this.dir = dir;
 	}
 }

@@ -41,7 +41,7 @@ public class Coordinate {
 	public void computeCoord(Location loc, int height) {
 		int c = loc.col;
 		int r = loc.row;
-		double radius = loc.radius;
+		double radius = loc.getRadius();
 		if (c % 2 == 0) {
 			x = (int) ((3 * (c / 2) + 1) * radius);
 			y = height - (int) (((r - (c / 2)) * 2 + 1) * radius);

@@ -1,0 +1,480 @@
+package server;
+
+
+import java.awt.Color;
+import java.util.ArrayList;
+
+import server.World.Thing;
+import student.*;
+
+/**
+ * Represents Critter
+ * 
+ * @author Scarlet
+ * */
+public class Critter implements Inhabitant {
+	/**
+	 * mem: memory of critter 
+	 * mem[0] : the length of the critter's memory (immutable, always at least 9) 
+	 * mem[1] : defensive ability (immutable, >=1) 
+	 * mem[2] : offensive ability (immutable, >= 1) 
+	 * mem[3] : size (variable, but cannot be assigned directly, >= 1) 
+	 * mem[4] : energy (variable, but cannot be assigned directly, always positive) 
+	 * mem[5] : rule counter (variable, but cannot be assigned directly) 
+	 * mem[6] : event log (variable, but cannot be assigned directly) 
+	 * mem[7] : tag ( variable, but cannot be assigned directly. Always between 0 and 999) 
+	 * mem[8] : posture (assignable but only to values between 0 and 999) 
+	 * location : Location of this Critter
+	 * direction : the Direction this Critter is facing 
+	 * prog : the set of rules of this Critter 
+	 * complexity : the weighted sum of the number of its rules, the size of its memory, and its offensive and defensive abilities.
+	 * complexity = number of rules * RULE_COST + (offense + defense) * ABILITY_COST 
+	 * act : array of possible actions this Critter can perform
+	 * world : the world this Critter lives in 
+	 * ID : unique ID of this Critter
+	 * color : color of this Critter, randomly generated using ID
+	 * */
+	int[] mem;
+	Location loc;
+	Direction dir;
+	Program prog;
+	private int complexity;
+	Action[] act;
+	World world;
+	int ID;
+	Color color;
+	int species;
+	Rule cur;
+
+	enum Action {
+		WAIT, FORWARD, BACKWARD, LEFT, RIGHT, EAT, ATTACK, GROW, BUD, MATE, TAG
+	};
+
+	final static int MOVE_COST = 3;
+	final static int ATTACK_COST = 5;
+	final static int GROW_COST = 1;
+	final static int BUD_COST = 9;
+	final static int MATE_COST = 5;
+	final static int RULE_COST = 2;
+	final static int ABILITY_COST = 25;
+	
+	public Critter(int[] memory, Location l) throws Exception {
+		this(memory[0], l, Direction.ZERO, 0);
+	}
+
+	/**
+	 * Creates a critter of default direction ZERO and species 0
+	 * 
+	 * @param memsize
+	 * @param loc
+	 * @throws Exception
+	 */
+	public Critter(int memsize, Location loc) throws Exception {
+		this(memsize, loc, Direction.ZERO, 0);
+	}
+
+	/**
+	 * Creates a new Critter
+	 * 
+	 * @param memsize
+	 * @param loc
+	 * @param dir
+	 * @param species
+	 *            # 0-3
+	 * @throws Exception
+	 */
+	Critter(int memsize, Location loc, Direction dir, int species)
+			throws Exception {
+		if (memsize < 9)
+			throw new Exception("not a valid input of critter memory size");
+		mem = new int[memsize];
+		mem[0] = memsize;
+		this.loc = loc;
+		this.dir = dir;
+		mem[3] = 1;
+		this.species = species;
+	}
+
+	/**
+	 * @return an array of possible actions of this Critter
+	 * */
+	private Action[] possibleAction() throws Exception {
+		Location next = Direction.getFacingTile(dir.getForward(), loc);
+		ArrayList<Action> actList = new ArrayList<Action>();
+		if (mem[4] >= energyWait())
+			actList.add(Action.WAIT);
+		if (mem[4] >= energyMove() && world.isEmpty(next))
+			actList.add(Action.FORWARD);
+		if (mem[4] >= energyMove()
+				&& world.isEmpty(Direction.getFacingTile(dir.getBackward(), loc)))
+			actList.add(Action.BACKWARD);
+		if (mem[4] >= energyTurn()) {
+			actList.add(Action.LEFT);
+			actList.add(Action.RIGHT);
+		}
+		if (mem[4] >= energyEat() && world.sensor(next) == Thing.FOOD)
+			actList.add(Action.EAT);
+		else if (world.sensor(next) == Thing.CRITTER) {
+			if (mem[4] >= energyAttack())
+				actList.add(Action.ATTACK);
+			if (mem[4] >= energyTag())
+				actList.add(Action.TAG);
+			if (mem[4] >= energyMate())
+				actList.add(Action.MATE);
+		}
+		if (mem[4] >= energyGrow())
+			actList.add(Action.GROW);
+		if (mem[4] >= energyBud())
+			actList.add(Action.BUD);
+		return actList.toArray(act);
+	}
+
+	/**
+	 * energyX returns the energy needed to do action X; energy needed is always
+	 * non negative
+	 * */
+	public int energyWait() {
+		return mem[3];
+	}
+
+	public int energyTurn() {
+		return mem[3];
+	}
+
+	public int energyEat() {
+		return mem[3];
+	}
+
+	public int energyMove() {
+		return mem[3] * MOVE_COST;
+	}
+
+	public int energyAttack() {
+		return mem[3] * ATTACK_COST;
+	}
+
+	public int energyTag() {
+		return mem[3];
+	}
+
+	public int energyBud() {
+		return BUD_COST * complexity;
+	}
+
+	public int energyMate() {
+		return MATE_COST * complexity;
+	}
+
+	public int energyGrow() {
+		return mem[3] * complexity * GROW_COST;
+	}
+
+	/**
+	 * actionX performs the action X
+	 * 
+	 * @throws InsufficientEnergyException
+	 *             if the Action cannot be performed due to insufficient energy
+	 * @throws Exception
+	 *             if the Action cannot be performed, due to insufficient
+	 *             energy, no food, etc.
+	 * */
+	public void actionWait() throws InsufficientEnergyException {
+		if (mem[4] <= energyWait()) {
+			world.delete(this);
+			world.addInhabitant(new Food(loc, mem[3] * 200));
+			throw new InsufficientEnergyException(
+					"there is not enough energy to wait");
+		}
+		mem[4] -= energyWait();
+	}
+
+	public void actionMoveF() throws InsufficientEnergyException {
+		if (mem[4] <= energyMove()) {
+			world.delete(this);
+			world.addInhabitant(new Food(loc, mem[3] * 200));
+			throw new InsufficientEnergyException(
+					"there is not enough energy to move");
+		}
+		mem[4] -= energyMove();
+		loc = Direction.getFacingTile(dir, loc);
+	}
+
+	public void actionMoveB() throws InsufficientEnergyException {
+		if (mem[4] <= energyMove()) {
+			world.delete(this);
+			world.addInhabitant(new Food(loc, mem[3] * 200));
+			throw new InsufficientEnergyException(
+					"there is not enough energy to move");
+		}
+		mem[4] -= energyMove();
+		loc = Direction.getFacingTile(dir.getBackward(), loc);
+	}
+
+	public void actionTurnL() throws InsufficientEnergyException {
+		if (mem[4] <= energyTurn()) {
+			world.delete(this);
+			world.addInhabitant(new Food(loc, mem[3] * 200));
+			throw new InsufficientEnergyException(
+					"there is not enough energy to turn");
+		}
+		mem[4] -= energyTurn();
+		dir = dir.left();
+	}
+
+	public void actionTurnR() throws InsufficientEnergyException {
+		if (mem[4] <= energyTurn()) {
+			world.delete(this);
+			world.addInhabitant(new Food(loc, mem[3] * 200));
+			throw new InsufficientEnergyException(
+					"there is not enough energy to turn");
+		}
+
+		mem[4] -= energyTurn();
+		dir = dir.right();
+	}
+
+	public void actionEat() throws InsufficientEnergyException {
+		if (mem[4] <= energyEat()) {
+			world.delete(this);
+			world.addInhabitant(new Food(loc, mem[3] * 200));
+			throw new InsufficientEnergyException(
+					"there is not enough energy to eat");
+		}
+		Food f = world.containsFood(loc);
+		mem[4] -= energyEat();
+		if (f != null) {
+			mem[4] += f.getEnergy();
+			world.delete(f);
+		}
+	}
+
+	public void actionAttack() throws InsufficientEnergyException {
+		if (mem[4] <= energyAttack()) {
+			world.delete(this);
+			world.addInhabitant(new Food(loc, mem[3] * 200));
+			throw new InsufficientEnergyException(
+					"there is not enough energy to attack");
+		}
+		Critter c = world.containsCritter(Direction.getFacingTile(dir, loc));
+		mem[4] -= energyAttack();
+		if (c != null) {
+			double d = 100 * mem[3]
+					* p(.2 * (mem[3] * mem[2] - c.mem[3] * c.mem[1]));
+			c.mem[4]-=d;
+			if(c.mem[4]<=0) {
+				world.delete(c);
+				world.addInhabitant(new Food(c.getLocation(), c.mem[3] * 200));
+			}
+		}
+	}
+
+	private double p(double i) {
+		return (1 / (1 + Math.pow(Math.E, -i)));
+	}
+
+	public void actionTag(int i) throws InsufficientEnergyException {
+		if (mem[4] <= energyTag()) {
+			world.delete(this);
+			world.addInhabitant(new Food(loc, mem[3] * 200));
+			throw new InsufficientEnergyException(
+					"there is not enough energy to tag");
+		}
+		Critter c = world.containsCritter(Direction.getFacingTile(dir, loc));
+		mem[4] -= energyTag();
+		if (c != null) {
+			c.mem[7] = i;
+		}
+	}
+
+	public void actionGrow() throws InsufficientEnergyException {
+		if (mem[4] <= energyGrow()) {
+			world.delete(this);
+			world.addInhabitant(new Food(loc, mem[3] * 200));
+			throw new InsufficientEnergyException(
+					"there is not enough energy to grow");
+		}
+		mem[4] -= energyGrow();
+		mem[3]++;
+	}
+
+	public void actionBud() throws InsufficientEnergyException {
+		if (mem[4] <= energyBud()) {
+			world.delete(this);
+			world.addInhabitant(new Food(loc, mem[3] * 200));
+			throw new InsufficientEnergyException(
+					"there is not enough energy to bud");
+		}
+		mem[4] -= energyBud();
+		try {
+			Critter cr = new Critter(9, Direction.getFacingTile(Direction.THREE, loc), dir, species);
+			cr.addProgram((Program) prog.mutate());
+			world.addInhabitant(cr);
+		} catch (Exception e) {
+			// bud failed
+		}
+	}
+
+	public void actionMate() throws InsufficientEnergyException {
+		if (mem[4] <= energyMate()) {
+			throw new InsufficientEnergyException(
+					"there is not enough energy to mate");
+		}
+		Critter c = world.containsCritter(Direction.getFacingTile(dir, loc));
+		if (c != null && c.dir.equals(dir.getBackward())) {
+			mem[4] -= energyMate();
+			try {
+				Critter cr = new Critter(9, Direction.getFacingTile(
+						dir.left(), loc), dir, (int) (species + c.species) / 2);
+				cr.addProgram(new Program(prog.getRules()));
+				world.addInhabitant(cr);
+			} catch (Exception e) {
+				mem[4] += energyMate(); // mate failed
+			}
+		}
+	}
+
+	/**
+	 * Performs an action according to the given key: 0: wait 1: move forward 2:
+	 * move backward 3: turn left 4: turn right 5: eat 6: attack 7: tag 8: grow
+	 * 9: bud 10: mate
+	 * 
+	 * @param action
+	 *            the int value of the action
+	 * @param tag
+	 *            the tag used if action = 7
+	 * @throws InsufficientEnergyException
+	 */
+	public void act(int action, int tag) throws InsufficientEnergyException {
+		switch (action) {
+		case 0:
+			actionWait();
+			break;
+		case 1:
+			actionMoveF();
+			break;
+		case 2:
+			actionMoveB();
+			break;
+		case 3:
+			actionTurnL();
+			break;
+		case 4:
+			actionTurnR();
+			break;
+		case 5:
+			actionEat();
+			break;
+		case 6:
+			actionAttack();
+			break;
+		case 7:
+			actionTag(tag);
+			break;
+		case 8:
+			actionGrow();
+			break;
+		case 9:
+			actionBud();
+			break;
+		case 10:
+			actionMate();
+			break;
+		}
+	}
+
+	@Override
+	public Location getLocation() {
+		return loc;
+	}
+
+	public void addWorld(World w) {
+		world = w;
+	}
+
+	@Override
+	public void setLocation(Location l) {
+		loc = l;
+	}
+	
+	/**
+	 * Updates the memory location m to new value n
+	 * @param m
+	 * @param n
+	 */
+	public void update(int m, int n) {
+		if(m < mem[0]) {
+			mem[m] = n;
+		}
+	}
+	
+	/**
+	 * gets the critter's appearance
+	 * @return
+	 */
+	public int appearance() {
+		return mem[7] * 100000 + mem[3] * 1000 + mem[8];
+	}
+	
+	/**
+	 * Gets the value at the given memory location.  If the location is too large, modded by the length of the memory.
+	 * @param m
+	 * @return
+	 */
+	public int getVal(int m) {
+		return mem[m%mem[0]];
+	}
+	
+	public void setLocation(int r, int c) {
+		loc = new Location(c, r);
+	}
+	
+	public void setDirection(int d) {
+		dir = new Direction(d);
+	}
+
+	public Rule getCurrentRule() {
+		return cur;
+	}
+	
+	public void selectRule() {
+		Rule[] rs = prog.getRules();
+		
+		for(int i=0; i<rs.length; i++) {
+			if(Interpreter.possible(rs[i], new State(world, this))) {
+				cur = rs[i];
+				return;
+			}
+		}
+	}
+
+	public void addProgram(Program p) {
+		prog = p;
+	}
+
+	public void act() {
+		selectRule();
+		Interpreter.execute(cur, new State(world, this));
+	}
+	
+	public Program getProgram() {
+		return prog;
+	}
+	
+	public int[] getMem() {
+		return mem;
+	}
+
+	/**
+	 * @return the complexity
+	 */
+	public int getComplexity() {
+		return complexity;
+	}
+
+	/**
+	 * @param complexity the complexity to set
+	 */
+	public void setComplexity(int complexity) {
+		this.complexity = complexity;
+	}
+}

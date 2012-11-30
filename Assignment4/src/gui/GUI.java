@@ -80,14 +80,14 @@ public class GUI extends JPanel {
 				c.world.stepTime();
 				Critter cr = c.world.selectedInhabitant();
 				if (cr != null) {
-					size.setText("Size: " + cr.mem[3]);
-					complexity = new JLabel("Complexity: " + cr.complexity);
-					offense = new JLabel("Offense: " + cr.mem[2]);
-					defense = new JLabel("Defense: " + cr.mem[1]);
-					thisTag = new JLabel("Tag: " + cr.mem[7]);
-					posture = new JLabel("Posture: " + cr.mem[8]);
+					size.setText("Size: " + cr.getVal(3));
+					complexity = new JLabel("Complexity: " + cr.getComplexity());
+					offense = new JLabel("Offense: " + cr.getVal(2));
+					defense = new JLabel("Defense: " + cr.getVal(1));
+					thisTag = new JLabel("Tag: " + cr.getVal(7));
+					posture = new JLabel("Posture: " + cr.getVal(8));
 					events = new JLabel("Events: "
-							+ new DecimalFormat().format(cr.mem[6]));
+							+ new DecimalFormat().format(cr.getVal(6)));
 				}
 				c.repaint();
 			}
@@ -268,12 +268,12 @@ public class GUI extends JPanel {
 	}
 	
 	public void updateStats(Critter c) {
-		size.setText("Size: " + c.mem[3]);
-		complexity.setText("Complexity: " + c.complexity);
-		offense.setText("Offense: " + c.mem[2]);
-		defense.setText("Defense: " + c.mem[1]);
-		thisTag.setText("Tag: " + c.mem[7]);
-		posture.setText("Posture: " + c.mem[8]);
-		events.setText("Events: " + c.mem[6]);
+		size.setText("Size: " + c.getVal(3));
+		complexity.setText("Complexity: " + c.getComplexity());
+		offense.setText("Offense: " + c.getVal(2));
+		defense.setText("Defense: " + c.getVal(1));
+		thisTag.setText("Tag: " + c.getVal(7));
+		posture.setText("Posture: " + c.getVal(8));
+		events.setText("Events: " + c.getVal(6));
 	}
 }

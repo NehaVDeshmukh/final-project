@@ -12,8 +12,8 @@ public class World {
 		FOOD, CRITTER, ROCK, PLANT, EMPTY
 	};
 
-	ArrayList<Inhabitant> inhabitants;
-	Location selected;
+	private ArrayList<Inhabitant> inhabitants;
+	private Location selected;
 	private Critter in;
 	private boolean wait = true;
 	private int inAct;
@@ -225,5 +225,33 @@ public class World {
 	
 	public int plants() {
 		return numPlants;
+	}
+
+	/**
+	 * @return the selected
+	 */
+	public Location getSelected() {
+		return selected;
+	}
+
+	/**
+	 * @param selected the selected to set
+	 */
+	public void setSelected(Location selected) {
+		this.selected = selected;
+	}
+
+	/**
+	 * @return the inhabitants
+	 */
+	public ArrayList<Inhabitant> getInhabitants() {
+		return inhabitants;
+	}
+
+	/**
+	 * @param inhabitants the inhabitants to set
+	 */
+	public void setInhabitants(ArrayList<Inhabitant> inhabitants) {
+		this.inhabitants = inhabitants;
 	}
 }

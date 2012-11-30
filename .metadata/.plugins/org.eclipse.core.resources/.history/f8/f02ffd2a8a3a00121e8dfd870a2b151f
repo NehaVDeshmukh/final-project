@@ -1,0 +1,84 @@
+package gui;
+
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.event.MouseInputListener;
+
+import server.Location;
+import student.State;
+
+public class GridListener implements MouseInputListener {
+
+	private Point origin, end;
+	private WorldCanvas world;
+	private Point pastClick = new Point(0,0);
+	private GUI g;
+
+	public GridListener(WorldCanvas w, GUI gui) {
+		world = w;
+		g = gui;
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		int x = arg0.getPoint().x;
+		int y = arg0.getPoint().y;		
+		int rad = (int) world.radius+30;
+		Location loc = Coordinate.getLocation3(x, y, world.p, (int) world.radius);
+		world.world.setSelectedLocation(loc);
+		System.out.println(world.world.selectedInhabitant());
+		System.out.println(world.world.selected);
+		System.out.println(world.world.containsRock(loc));
+		if(world.world.selectedInhabitant()!=null) {
+			System.out.println(new State(world.world, world.world.selectedInhabitant()).getFood());
+			g.updateStats(world.world.selectedInhabitant());
+		}
+		world.repaint(x-rad,y-rad,2*rad,2*rad);
+		world.repaint(pastClick.x-rad,pastClick.y-rad,2*rad,2*rad);
+		pastClick = new Point(x,y);
+		System.out.println("click");		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		// does nothing
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		// does nothing
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		origin = arg0.getPoint();
+		System.out.println(origin);
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		// nothing
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent arg0) {
+		//nothing for now, may change later
+		// Figure out the origin of the nullpointerexceptions: why isn't it
+		// executing mousePressed():
+		//end = arg0.getPoint();
+		//world.translate(end.x - origin.x, end.y - origin.y);
+		//origin = arg0.getPoint();
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent arg0) {
+		int x = arg0.getPoint().x;
+		int y = arg0.getPoint().y;
+		Location loc = Coordinate.getLocation3(x, y, world.p, (int) world.radius);
+	}
+
+}

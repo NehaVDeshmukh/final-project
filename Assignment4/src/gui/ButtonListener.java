@@ -21,7 +21,7 @@ public class ButtonListener implements ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 		if(arg0.getSource().equals(gui.zIn)) {
 			zoom();
-			gui.zoomedAt.setText("Zoomed in at location: " + world.world.selected);
+			gui.zoomedAt.setText("Zoomed in at location: " + world.world.getSelected());
 		}
 		else if(arg0.getSource().equals(gui.zOut)) {
 			gui.c.repaint();
@@ -31,13 +31,13 @@ public class ButtonListener implements ActionListener {
 			Critter cr = world.world.selectedInhabitant();
 			if (cr != null) {
 				System.out.println("Critter!");
-				gui.size.setText("Size: " + cr.mem[3]);
-				gui.complexity = new JLabel("Complexity: " + cr.complexity);
-				gui.offense = new JLabel("Offense: " + cr.mem[2]);
-				gui.defense = new JLabel("Defense: " + cr.mem[1]);
-				gui.thisTag = new JLabel("Tag: " + cr.mem[7]);
-				gui.posture = new JLabel("Posture: " + cr.mem[8]);
-				gui.events = new JLabel("Events: " + new DecimalFormat().format(cr.mem[6]));
+				gui.size.setText("Size: " + cr.getVal(3));
+				gui.complexity = new JLabel("Complexity: " + cr.getComplexity());
+				gui.offense = new JLabel("Offense: " + cr.getVal(2));
+				gui.defense = new JLabel("Defense: " + cr.getVal(1));
+				gui.thisTag = new JLabel("Tag: " + cr.getVal(7));
+				gui.posture = new JLabel("Posture: " + cr.getVal(8));
+				gui.events = new JLabel("Events: " + new DecimalFormat().format(cr.getVal(6)));
 			}
 			world.repaint();
 		}

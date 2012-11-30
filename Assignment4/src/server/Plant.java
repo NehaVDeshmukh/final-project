@@ -20,7 +20,7 @@ public class Plant implements Inhabitant {
 	final double grow = 0.15;
 	World world;
 	Location loc;
-	int age;
+	private int age;
 
 	/**
 	 * Creates a new plant on location l
@@ -83,5 +83,19 @@ public class Plant implements Inhabitant {
 	@Override
 	public void act() {
 		age++;
+	}
+
+	/**
+	 * @return the age
+	 */
+	public int getAge() {
+		return age;
+	}
+
+	/**
+	 * @param age the age to set
+	 */
+	public void setAge(int age) {
+		this.age = age;
 	}
 }

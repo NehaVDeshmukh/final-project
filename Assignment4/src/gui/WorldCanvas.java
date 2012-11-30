@@ -75,12 +75,12 @@ public class WorldCanvas extends HexGridCanvas2 {
 	public void paint(Graphics g) {
 		g.translate(xTrans, yTrans);
 		super.paint(g);
-		if (world.selected != null) {
+		if (world.getSelected() != null) {
 			g.setColor(new Color(255, 214, 255));
 			Coordinate c;
 			try {
-				c = Location.getCoordinate(world.selected.col,
-						world.selected.row, (int) radius, height);
+				c = Location.getCoordinate(world.getSelected().col,
+						world.getSelected().row, (int) radius, height);
 
 				int x = c.getX();
 				int y = c.getY();
@@ -96,25 +96,25 @@ public class WorldCanvas extends HexGridCanvas2 {
 				// are we ever going to have a negative radius?
 			}
 		}
-		for (Inhabitant i : world.inhabitants) {
+		for (Inhabitant i : world.getInhabitants()) {
 			Coordinate c;
 			try {
 				c = Location.getCoordinate(i.getLocation().col,
 						i.getLocation().row, (int) radius, height);
 				if (i instanceof Critter)
 					critter = ImageIO.read(new File("critter"
-							+ ((Critter) i).species + ".png"));
+							+ ((Critter) i).getSpecies() + ".png"));
 			} catch (Exception e) {
 				// we would never make a negative radius, right?
 				c = new Coordinate(i.getLocation(), 0);
 			}
 			if (i instanceof Critter) {
-				double s = ((Critter) i).mem[3];
+				double s = ((Critter) i).getVal(3);
 				s *= .1;
 				if (s > 1)
 					s = 1;
 				s += .5;
-				double r = ((Critter) i).dir.getRadians();
+				double r = ((Critter) i).getDir().getRadians();
 				AffineTransform rotate = AffineTransform.getRotateInstance(r,
 						critter.getWidth() / 2, critter.getHeight() / 2);
 				AffineTransformOp op = new AffineTransformOp(rotate,
@@ -131,7 +131,7 @@ public class WorldCanvas extends HexGridCanvas2 {
 				g.fillOval(c.getX() - (int) (.5 * radius), c.getY()
 						- (int) (.5 * radius), (int) radius, (int) radius);
 			} else if (i instanceof Plant) {
-				int t = ((Plant) i).age;
+				int t = ((Plant) i).getAge();
 				if (t <= 3) {
 					g.drawImage(leaf, c.getX() - (int) (.5 * radius), c.getY()
 							- (int) (.5 * radius), (int) (radius),
