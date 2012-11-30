@@ -16,7 +16,7 @@ public class RemoteCritterImpl extends Critter implements RemoteCritter {
 
 
 	@Override
-	public void act(RemoteCritter.Action action) {
+	public void act(Action action) {
 		int a;
 
 		switch (action) {
