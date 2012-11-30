@@ -6,6 +6,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.event.MouseInputListener;
 
+import server.Location;
 import student.State;
 
 public class GridListener implements MouseInputListener {

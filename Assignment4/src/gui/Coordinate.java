@@ -2,6 +2,8 @@ package gui;
 
 import java.awt.Point;
 
+import server.Location;
+
 public class Coordinate {
 
 	/**

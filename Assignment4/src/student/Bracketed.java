@@ -1,9 +1,10 @@
 package student;
 
-import gui.Direction;
-import gui.Location;
 
 import java.util.Random;
+
+import server.Direction;
+import server.Location;
 
 /**
  * 

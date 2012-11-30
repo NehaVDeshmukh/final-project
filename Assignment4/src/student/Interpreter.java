@@ -8,12 +8,13 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.Scanner;
 
-import gui.Critter;
-import gui.InsufficientEnergyException;
-import gui.Location;
-import gui.Plant;
-import gui.Rock;
-import gui.World;
+import server.Critter;
+import server.InsufficientEnergyException;
+import server.Location;
+import server.Plant;
+import server.Rock;
+import server.World;
+
 
 public class Interpreter {
 	public static boolean execute(Rule r, State s) {

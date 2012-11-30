@@ -6,6 +6,8 @@ import java.text.DecimalFormat;
 
 import javax.swing.JLabel;
 
+import server.Critter;
+
 public class ButtonListener implements ActionListener {
 	GUI gui;
 	WorldCanvas world;

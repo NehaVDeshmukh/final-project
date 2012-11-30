@@ -14,6 +14,14 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
+import server.Critter;
+import server.Food;
+import server.Inhabitant;
+import server.Location;
+import server.Plant;
+import server.Rock;
+import server.World;
+
 public class WorldCanvas extends HexGridCanvas2 {
 	World world;
 	BufferedImage critter;

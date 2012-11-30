@@ -9,6 +9,12 @@ import java.util.Random;
 
 import javax.swing.JFrame;
 
+import server.Critter;
+import server.Food;
+import server.Location;
+import server.Plant;
+import server.Rock;
+
 /**
  * Creates a grid
  * 

@@ -27,6 +27,8 @@ import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import server.Critter;
+import server.Inhabitant;
 import student.Interpreter;
 
 public class GUI extends JPanel {

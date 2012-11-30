@@ -1,7 +1,5 @@
 package server;
 
-import gui.Critter;
-import gui.World;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;

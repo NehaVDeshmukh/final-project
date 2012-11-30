@@ -1,8 +1,5 @@
 package server;
 
-import gui.Critter;
-import gui.InsufficientEnergyException;
-import gui.Location;
 
 public class RemoteCritterImpl extends Critter implements RemoteCritter {
 	Species s;	//what to do about this?

@@ -2,11 +2,12 @@ package student;
 
 import java.util.ArrayList;
 
-import gui.Critter;
-import gui.Food;
-import gui.Location;
-import gui.Rock;
-import gui.World;
+import server.Critter;
+import server.Food;
+import server.Location;
+import server.Rock;
+import server.World;
+
 
 public class State {
 	World w;

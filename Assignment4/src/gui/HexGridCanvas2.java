@@ -9,6 +9,8 @@ import java.awt.Point;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import server.Location;
+
 public class HexGridCanvas2 extends Canvas {
 
 	int MAX_COLUMN;
