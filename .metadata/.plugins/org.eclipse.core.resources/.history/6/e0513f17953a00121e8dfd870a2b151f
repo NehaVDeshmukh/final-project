@@ -194,23 +194,6 @@ public class World {
 
 		return null;
 	}
-	
-	/**
-	 * Returns the plant at Location l, null if none
-	 * 
-	 * @param l
-	 * @return
-	 */
-	public Plant containsPlant(Location l) {
-		for (Inhabitant i : inhabitants) {
-			if (i.getLocation().equals(selected)) {
-				if (i instanceof Plant)
-					return (Plant) i;
-			}
-		}
-
-		return null;
-	}
 
 	/**
 	 * deletes the given inhabitant

@@ -9,7 +9,7 @@ public class Direction {
 	public static final Direction FOUR = new Direction(4);
 	public static final Direction FIVE = new Direction(5);
 
-	int dir;
+	private int dir;
 
 	/**
 	 * Creates a direction, 0-5.

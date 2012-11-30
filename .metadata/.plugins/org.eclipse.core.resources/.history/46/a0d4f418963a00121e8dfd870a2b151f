@@ -13,9 +13,7 @@ public class RemoteCritterImpl extends Critter implements RemoteCritter {
 		super(memory, l);
 	}
 
-	public RemoteCritterImpl(Critter c) throws Exception {
-		super(c.mem, c.loc);
-	}
+
 
 	@Override
 	public void act(RemoteCritter.Action action) {

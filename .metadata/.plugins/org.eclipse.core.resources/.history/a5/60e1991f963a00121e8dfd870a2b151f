@@ -13,7 +13,7 @@ public class RemoteCritterImpl extends Critter implements RemoteCritter {
 		super(memory, l);
 	}
 
-	public RemoteCritterImpl(Critter c) throws Exception {
+	public RemoteCritterImpl(Critter c) {
 		super(c.mem, c.loc);
 	}
 
