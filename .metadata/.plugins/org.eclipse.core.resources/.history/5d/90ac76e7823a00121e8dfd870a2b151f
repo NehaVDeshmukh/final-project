@@ -59,7 +59,6 @@ public class Critter implements Inhabitant {
 	
 	public Critter(int[] memory, Location l) throws Exception {
 		this(memory[0], l, Direction.ZERO, 0);
-		mem = memory;
 	}
 
 	/**

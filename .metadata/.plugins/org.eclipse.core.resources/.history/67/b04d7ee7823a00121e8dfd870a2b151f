@@ -2,21 +2,14 @@ package server;
 
 import gui.Critter;
 import gui.InsufficientEnergyException;
-import gui.Location;
 
-public class RemoteCritterImpl extends Critter implements RemoteCritter {
-	Species s;	//what to do about this?
-	
-	/**
-	 * @param memory
-	 * @param l
-	 * @throws Exception
-	 */
-	public RemoteCritterImpl(int[] memory, Location l) throws Exception {
-		super(memory, l);
+public class RemoteCritterImpl implements RemoteCritter {
+	Critter c;
+	Species s;
+
+	public RemoteCritterImpl() {
+		// TODO Auto-generated constructor stub
 	}
-
-
 
 	@Override
 	public void act(Action action) {
@@ -59,7 +52,7 @@ public class RemoteCritterImpl extends Critter implements RemoteCritter {
 		}
 
 		try {
-			super.act(a, 0);
+			c.act(a, 0);
 		} catch (InsufficientEnergyException e) {
 			// TODO Auto-generated catch block
 		}
@@ -67,7 +60,8 @@ public class RemoteCritterImpl extends Critter implements RemoteCritter {
 
 	@Override
 	public int getTag() {
-		return super.getVal(7);
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
