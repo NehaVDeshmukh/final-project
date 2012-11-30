@@ -1,5 +1,6 @@
 package server;
 
+
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,7 +26,7 @@ public class AdminServerImpl implements AdminServer {
 	boolean running = false;
 	Timer t;
 	int delay = 1000000;
-	Cell[] c; // is this necessary?
+	Cell[] c;	//is this necessary?
 
 	/**
 	 * @param args
@@ -125,23 +126,20 @@ public class AdminServerImpl implements AdminServer {
 		ArrayList<Cell> cells = new ArrayList<Cell>();
 		boolean food, plant, rock, critter;
 		Location l;
-		for (int c = 0; c < numCols; c++) {
-			for (int r = 0; r < numRows; c++) {
+		for(int c = 0; c<numCols; c++) {
+			for(int r = 0; r<numRows; c++) {
 				l = new Location(c, r);
-				food = (w.containsFood(l) != null);
-				plant = (w.containsPlant(l) != null);
-				rock = (w.containsRock(l) != null);
-				critter = (w.containsCritter(l) != null);
-
-				if (food || plant || rock || critter)
+				food = (w.containsFood(l)!=null);
+				plant = (w.containsPlant(l)!=null);
+				rock = (w.containsRock(l)!=null);
+				critter = (w.containsCritter(l)!=null);
+				
+				if(food||plant||rock||critter)
 					try {
-						RemoteCritterImpl crit = new RemoteCritterImpl(
-								w.containsCritter(l));
-						cells.add(new Cell(r, c, critter, plant, rock, food,
-								crit, crit.s, crit.getVal(3),
-								crit.getDir().dir, crit.appearance()));
+						RemoteCritterImpl crit = new RemoteCritterImpl(w.containsCritter(l));
+						cells.add(new Cell(r, c, critter, plant, rock, food, crit, crit.s, crit.getVal(3), crit.getDir().dir, crit.appearance()));
 					} catch (Exception e) {
-						// already a legal critter
+						//already a legal critter
 					}
 			}
 		}
@@ -156,7 +154,7 @@ public class AdminServerImpl implements AdminServer {
 
 	@Override
 	public long getSimRate() throws RemoteException {
-		return 60 / (delay / 1000);
+		return 60 / (delay/1000);
 	}
 
 	@Override
@@ -306,7 +304,7 @@ public class AdminServerImpl implements AdminServer {
 
 	@Override
 	public void setSimRate(long rate) throws RemoteException {
-		int i = (int) ((60 / rate) * 1000);
+		int i = (int) ((60/rate) * 1000);
 		delay = i;
 	}
 
@@ -319,7 +317,7 @@ public class AdminServerImpl implements AdminServer {
 	@Override
 	public void kill(int id) throws RemoteException {
 		Critter c = getCritter(id);
-		// TODO
+		//TODO
 	}
 
 	@Override
@@ -418,11 +416,8 @@ public class AdminServerImpl implements AdminServer {
 
 	}
 
-	private Critter getCritter(int id) throws IncorrectIDException {
-		Inhabitant p = w.getInhabitants().get(id);
-		if (!(p instanceof Critter))
-			throw new IncorrectIDException();
-
-		return (Critter) p;
+	private Critter getCritter(int id) {
+		// TODO
+		return null;
 	}
 }

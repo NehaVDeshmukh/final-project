@@ -418,10 +418,10 @@ public class AdminServerImpl implements AdminServer {
 
 	}
 
-	private Critter getCritter(int id) throws IncorrectIDException {
+	private Critter getCritter(int id) {
 		Inhabitant p = w.getInhabitants().get(id);
 		if (!(p instanceof Critter))
-			throw new IncorrectIDException();
+			throw new ClassCastException();
 
 		return (Critter) p;
 	}

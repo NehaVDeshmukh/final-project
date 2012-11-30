@@ -180,9 +180,8 @@ public class Critter implements Inhabitant {
 	 * */
 	public void actionWait() throws InsufficientEnergyException {
 		if (mem[4] <= energyWait()) {
-			int i = world.getInhabitants().indexOf(this);
 			world.delete(this);
-			world.getInhabitants().add(i, (new Food(loc, mem[3] * 200)));
+			world.addInhabitant(new Food(loc, mem[3] * 200));
 			throw new InsufficientEnergyException(
 					"there is not enough energy to wait");
 		}
@@ -191,9 +190,8 @@ public class Critter implements Inhabitant {
 
 	public void actionMoveF() throws InsufficientEnergyException {
 		if (mem[4] <= energyMove()) {
-			int i = world.getInhabitants().indexOf(this);
 			world.delete(this);
-			world.getInhabitants().add(i, (new Food(loc, mem[3] * 200)));
+			world.addInhabitant(new Food(loc, mem[3] * 200));
 			throw new InsufficientEnergyException(
 					"there is not enough energy to move");
 		}
@@ -203,9 +201,8 @@ public class Critter implements Inhabitant {
 
 	public void actionMoveB() throws InsufficientEnergyException {
 		if (mem[4] <= energyMove()) {
-			int i = world.getInhabitants().indexOf(this);
 			world.delete(this);
-			world.getInhabitants().add(i, (new Food(loc, mem[3] * 200)));
+			world.addInhabitant(new Food(loc, mem[3] * 200));
 			throw new InsufficientEnergyException(
 					"there is not enough energy to move");
 		}
@@ -215,9 +212,8 @@ public class Critter implements Inhabitant {
 
 	public void actionTurnL() throws InsufficientEnergyException {
 		if (mem[4] <= energyTurn()) {
-			int i = world.getInhabitants().indexOf(this);
 			world.delete(this);
-			world.getInhabitants().add(i, (new Food(loc, mem[3] * 200)));
+			world.addInhabitant(new Food(loc, mem[3] * 200));
 			throw new InsufficientEnergyException(
 					"there is not enough energy to turn");
 		}
@@ -227,9 +223,8 @@ public class Critter implements Inhabitant {
 
 	public void actionTurnR() throws InsufficientEnergyException {
 		if (mem[4] <= energyTurn()) {
-			int i = world.getInhabitants().indexOf(this);
 			world.delete(this);
-			world.getInhabitants().add(i, (new Food(loc, mem[3] * 200)));
+			world.addInhabitant(new Food(loc, mem[3] * 200));
 			throw new InsufficientEnergyException(
 					"there is not enough energy to turn");
 		}
@@ -240,9 +235,8 @@ public class Critter implements Inhabitant {
 
 	public void actionEat() throws InsufficientEnergyException {
 		if (mem[4] <= energyEat()) {
-			int i = world.getInhabitants().indexOf(this);
 			world.delete(this);
-			world.getInhabitants().add(i, (new Food(loc, mem[3] * 200)));
+			world.addInhabitant(new Food(loc, mem[3] * 200));
 			throw new InsufficientEnergyException(
 					"there is not enough energy to eat");
 		}
@@ -256,9 +250,8 @@ public class Critter implements Inhabitant {
 
 	public void actionAttack() throws InsufficientEnergyException {
 		if (mem[4] <= energyAttack()) {
-			int i = world.getInhabitants().indexOf(this);
 			world.delete(this);
-			world.getInhabitants().add(i, (new Food(loc, mem[3] * 200)));
+			world.addInhabitant(new Food(loc, mem[3] * 200));
 			throw new InsufficientEnergyException(
 					"there is not enough energy to attack");
 		}
@@ -281,9 +274,8 @@ public class Critter implements Inhabitant {
 
 	public void actionTag(int i) throws InsufficientEnergyException {
 		if (mem[4] <= energyTag()) {
-			int in = world.getInhabitants().indexOf(this);
 			world.delete(this);
-			world.getInhabitants().add(in, (new Food(loc, mem[3] * 200)));
+			world.addInhabitant(new Food(loc, mem[3] * 200));
 			throw new InsufficientEnergyException(
 					"there is not enough energy to tag");
 		}
@@ -296,9 +288,8 @@ public class Critter implements Inhabitant {
 
 	public void actionGrow() throws InsufficientEnergyException {
 		if (mem[4] <= energyGrow()) {
-			int i = world.getInhabitants().indexOf(this);
 			world.delete(this);
-			world.getInhabitants().add(i, (new Food(loc, mem[3] * 200)));
+			world.addInhabitant(new Food(loc, mem[3] * 200));
 			throw new InsufficientEnergyException(
 					"there is not enough energy to grow");
 		}
@@ -308,9 +299,8 @@ public class Critter implements Inhabitant {
 
 	public void actionBud() throws InsufficientEnergyException {
 		if (mem[4] <= energyBud()) {
-			int i = world.getInhabitants().indexOf(this);
 			world.delete(this);
-			world.getInhabitants().add(i, (new Food(loc, mem[3] * 200)));
+			world.addInhabitant(new Food(loc, mem[3] * 200));
 			throw new InsufficientEnergyException(
 					"there is not enough energy to bud");
 		}
