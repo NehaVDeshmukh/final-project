@@ -37,7 +37,7 @@ public class HexGridCanvas2 extends Canvas {
 		if (c % 2 == 0) {
 			height = (int) (2 * radius * (r + 1 - c / 2));
 		} else {
-			height = (int) (2 * radius * (r + 0.5 - c / 2));
+			height = (int) (2 * radius * (r - c / 2));
 		}
 		setSize(width = w, height);
 		MAX_COLUMN = c;
