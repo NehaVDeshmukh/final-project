@@ -1,0 +1,32 @@
+package server;
+
+import gui.Critter;
+
+public class RemoteCritterImpl implements RemoteCritter {
+	Critter c;
+	Species s;
+
+	public RemoteCritterImpl() {
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public void act(Action action) {
+		int a = 0;
+		
+	/**	switch(action) {
+		case FORWARD,
+		BACKWARD,
+		LEFT,
+		RIGHT,
+		EAT,
+		ATTACK,
+		GROW,
+		BUD,
+		MATE;
+		}**/
+		
+		c.act(a, 0);
+	}
+
+}

@@ -1,0 +1,15 @@
+package server;
+
+public class RemoteCritterImpl implements RemoteCritter {
+
+	public RemoteCritterImpl() {
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public void act(Action action) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

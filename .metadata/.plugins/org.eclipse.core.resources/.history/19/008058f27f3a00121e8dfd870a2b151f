@@ -3,8 +3,6 @@ package server;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-import server.RemoteCritter.Action;
-
 public interface Server extends Remote {
 
 	//world information
@@ -102,6 +100,14 @@ public interface Server extends Remote {
 	 * @throws RemoteException
 	 */
 	public Action getCritterAction(int id) throws RemoteException;
+
+	/**
+	 * An enum listing all possible actions.
+	 */
+	public enum Action {
+		WAIT, FORWARD, BACKWARD, LEFT, RIGHT,
+		EAT, ATTACK, GROW, BUD, MATE
+	}
 
 	//login interface
 	/**

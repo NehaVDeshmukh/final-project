@@ -1,0 +1,38 @@
+package server;
+
+import gui.Critter;
+import gui.InsufficientEnergyException;
+
+public class RemoteCritterImpl implements RemoteCritter {
+	Critter c;
+	Species s;
+
+	public RemoteCritterImpl() {
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public void act(Action action) {
+		int a = 0;
+		
+	/**	switch(action) {
+		case FORWARD,
+		BACKWARD,
+		LEFT,
+		RIGHT,
+		EAT,
+		ATTACK,
+		GROW,
+		BUD,
+		MATE;
+		}**/
+		
+		try {
+			c.act(a, 0);
+		} catch (InsufficientEnergyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+}

@@ -199,8 +199,6 @@ public class AdminServerImpl implements AdminServer {
 			return Action.EAT;
 		case 6:
 			return Action.ATTACK;
-		case 7:
-			return Action.TAG;
 		case 8:
 			return Action.GROW;
 		case 9:

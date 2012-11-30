@@ -12,8 +12,6 @@ public interface RemoteCritter extends Remote{
 	 */
 	public void act(Action action);
 	
-	public int getTag();
-	
 	/**
 	 * An enumeration of all possible actions.
 	 */
@@ -27,8 +25,7 @@ public interface RemoteCritter extends Remote{
 		ATTACK,
 		GROW,
 		BUD,
-		MATE,
-		TAG;
+		MATE;
 
 		/**
 		 * The list of actions.

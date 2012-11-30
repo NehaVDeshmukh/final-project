@@ -2,8 +2,6 @@ package server;
 
 import java.rmi.RemoteException;
 
-import server.RemoteCritter.Action;
-
 
 /**
  * An AdminServer exposes the administrative interface to
