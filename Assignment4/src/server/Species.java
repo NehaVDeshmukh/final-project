@@ -30,4 +30,12 @@ public class Species implements RemoteSpecies {
 		return program;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if(o instanceof Species) {
+			if(((Species) o).attributes.equals(attributes) && ((Species) o).lineage.equals(lineage) && ((Species) o).program.equals(program))
+				return true;
+		}
+		return false;
+	}
 }

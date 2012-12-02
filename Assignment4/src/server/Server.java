@@ -6,7 +6,6 @@ import java.rmi.RemoteException;
 import server.RemoteCritter.Action;
 
 public interface Server extends Remote {
-
 	//world information
 	/**
 	 * 
@@ -73,8 +72,9 @@ public interface Server extends Remote {
 	 * @return The critter's program, pretty-printed, or {@code null} if
 	 * the critter does not exist or there is no program associated with the critter.
 	 * @throws RemoteException
+	 * @throws IncorrectIDException 
 	 */
-	public String getCritterProgram(int id) throws RemoteException;
+	public String getCritterProgram(int id) throws RemoteException, IncorrectIDException;
 
 	/**
 	 * Returns the special-purpose entries (i.e., first several entries) of a critter's memory.
@@ -82,8 +82,9 @@ public interface Server extends Remote {
 	 * @return The special-purpose entries of a critter's memory, or {@code null} if
 	 * the critter does not exist.
 	 * @throws RemoteException
+	 * @throws IncorrectIDException 
 	 */
-	public int[] getCritterMemory(int id) throws RemoteException;
+	public int[] getCritterMemory(int id) throws RemoteException, IncorrectIDException;
 
 	/**
 	 * Returns the pretty-print of the most recently executed rule of a critter.
@@ -91,8 +92,9 @@ public interface Server extends Remote {
 	 * @return The critter's most recently executed rule, pretty-printed, or {@code null} if
 	 * the critter does not exist or it did not execute a rule in the last time step.
 	 * @throws RemoteException
+	 * @throws IncorrectIDException 
 	 */
-	public String getCritterCurrentRule(int id) throws RemoteException;
+	public String getCritterCurrentRule(int id) throws RemoteException, IncorrectIDException;
 
 	/**
 	 * Returns an action a critter should take, overriding regular behavior.
@@ -100,8 +102,9 @@ public interface Server extends Remote {
 	 * @return The overriding action, or {@code null} if the critter should
 	 * follow its regular behavior.
 	 * @throws RemoteException
+	 * @throws IncorrectIDException 
 	 */
-	public Action getCritterAction(int id) throws RemoteException;
+	public Action getCritterAction(int id) throws RemoteException, IncorrectIDException;
 
 	//login interface
 	/**
@@ -175,4 +178,6 @@ public interface Server extends Remote {
 	 * @throws RemoteException
 	 */
 	public int[] getLineage(int species_id) throws RemoteException;
+	
+	public String getUsername();
 }

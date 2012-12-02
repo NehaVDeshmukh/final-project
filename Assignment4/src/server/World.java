@@ -13,6 +13,7 @@ public class World {
 	};
 
 	private ArrayList<Inhabitant> inhabitants;
+	ArrayList<Species> species;
 	private Location selected;
 	private Critter in;
 	private boolean wait = true;
@@ -22,13 +23,15 @@ public class World {
 
 	/**
 	 * creates a new row with r rows and c columns
+	 * 
 	 * @param r
 	 * @param c
 	 */
 	public World(int r, int c) {
 		inhabitants = new ArrayList<Inhabitant>();
-		MAX_ROW = r-1;
-		MAX_COLUMN = c-1;
+		species = new ArrayList<Species>();
+		MAX_ROW = r - 1;
+		MAX_COLUMN = c - 1;
 	}
 
 	/**
@@ -81,7 +84,7 @@ public class World {
 
 	public void stepTime() {
 		Random r = new Random();
-		for (int i=0; i< inhabitants.size(); i++) {
+		for (int i = 0; i < inhabitants.size(); i++) {
 			if (inhabitants.get(i) == in) {
 				try {
 					inhabitants.get(i).act(inAct, r.nextInt(1000));
@@ -99,10 +102,10 @@ public class World {
 		selected = l;
 		selectInhabitant(l);
 	}
-	
+
 	private void selectInhabitant(Location l) {
 		Critter c = this.containsCritter(l);
-		if(c!=null)
+		if (c != null)
 			in = c;
 	}
 
@@ -138,10 +141,10 @@ public class World {
 		i.addWorld(this);
 		inhabitants.add(i);
 		i.getLocation().setRadius(radius);
-		if(i instanceof Critter)
-			numCritters ++;
-		if(i instanceof Plant)
-			numPlants ++;
+		if (i instanceof Critter)
+			numCritters++;
+		if (i instanceof Plant)
+			numPlants++;
 	}
 
 	/**
@@ -194,7 +197,7 @@ public class World {
 
 		return null;
 	}
-	
+
 	/**
 	 * Returns the plant at Location l, null if none
 	 * 
@@ -227,19 +230,19 @@ public class World {
 			i.getLocation().setRadius(r);
 		}
 	}
-	
+
 	public int getAction() {
 		return inAct;
 	}
-	
+
 	public int time() {
 		return time;
 	}
-	
+
 	public int critters() {
 		return numCritters;
 	}
-	
+
 	public int plants() {
 		return numPlants;
 	}
@@ -252,7 +255,8 @@ public class World {
 	}
 
 	/**
-	 * @param selected the selected to set
+	 * @param selected
+	 *            the selected to set
 	 */
 	public void setSelected(Location selected) {
 		this.selected = selected;
@@ -266,9 +270,22 @@ public class World {
 	}
 
 	/**
-	 * @param inhabitants the inhabitants to set
+	 * @param inhabitants
+	 *            the inhabitants to set
 	 */
 	public void setInhabitants(ArrayList<Inhabitant> inhabitants) {
 		this.inhabitants = inhabitants;
+	}
+
+	public Species getSpecies(int id) {
+		try {
+			return species.get(id);
+		} catch (IndexOutOfBoundsException e) {
+			return null;
+		}
+	}
+	
+	public void setSelectedInhabitant(Critter c) {
+		in = c;
 	}
 }

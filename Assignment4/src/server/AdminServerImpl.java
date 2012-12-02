@@ -11,7 +11,9 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -26,6 +28,13 @@ public class AdminServerImpl implements AdminServer {
 	Timer t;
 	int delay = 1000000;
 	Cell[] c; // is this necessary?
+	boolean uploads = true, downloads = true;
+	Hashtable<String, Server> users;
+	Hashtable<String, String[]> passwords;
+	String username;
+	ArrayList<String> aRequests, pRequests, admins, players;
+	SecureRandom generator;
+	ArrayList<String> critterFiles;
 
 	/**
 	 * @param args
@@ -40,7 +49,7 @@ public class AdminServerImpl implements AdminServer {
 			System.err.println("RMIRegistry Error " + e.toString());
 		}
 		try {
-			Server obj = new AdminServerImpl(myWorld);
+			Server obj = new AdminServerImpl(myWorld, "me");
 			Server stub = (Server) UnicastRemoteObject.exportObject(obj, 0);
 
 			// Bind the remote object's stub in the registry
@@ -88,7 +97,7 @@ public class AdminServerImpl implements AdminServer {
 		frame.setVisible(true);
 	}
 
-	public AdminServerImpl(World world) {
+	public AdminServerImpl(World world, String name) {
 		// Register the location of the codebase with your rmi registry
 		System.setProperty("java.rmi.server.codebase", AdminServerImpl.class
 				.getProtectionDomain().getCodeSource().getLocation().toString());
@@ -99,6 +108,9 @@ public class AdminServerImpl implements AdminServer {
 			}
 		});
 		t.setDelay(delay);
+		users = new Hashtable<String, Server>();
+		username = name;
+		critterFiles = new ArrayList<String>();
 	}
 
 	@Override
@@ -106,6 +118,7 @@ public class AdminServerImpl implements AdminServer {
 			throws RemoteException {
 		Critter c = Interpreter.importCritter(critterFileContent);
 		w.addInhabitant(c);
+		critterFiles.add(critterFileContent);
 		return c.toString();
 	}
 
@@ -175,7 +188,8 @@ public class AdminServerImpl implements AdminServer {
 	}
 
 	@Override
-	public String getCritterProgram(int id) throws RemoteException {
+	public String getCritterProgram(int id) throws RemoteException,
+			IncorrectIDException {
 		Critter c = getCritter(id);
 		StringBuffer sb = new StringBuffer();
 		c.getProgram().prettyPrint(sb);
@@ -183,13 +197,15 @@ public class AdminServerImpl implements AdminServer {
 	}
 
 	@Override
-	public int[] getCritterMemory(int id) throws RemoteException {
+	public int[] getCritterMemory(int id) throws RemoteException,
+			IncorrectIDException {
 		Critter c = getCritter(id);
 		return c.getMem();
 	}
 
 	@Override
-	public String getCritterCurrentRule(int id) throws RemoteException {
+	public String getCritterCurrentRule(int id) throws RemoteException,
+			IncorrectIDException {
 		Critter c = getCritter(id);
 		StringBuffer sb = new StringBuffer();
 		c.getCurrentRule().prettyPrint(sb);
@@ -197,7 +213,8 @@ public class AdminServerImpl implements AdminServer {
 	}
 
 	@Override
-	public Action getCritterAction(int id) throws RemoteException {
+	public Action getCritterAction(int id) throws RemoteException,
+			IncorrectIDException {
 		Critter c = getCritter(id);
 		if (!c.equals(w.selectedInhabitant()))
 			return null;
@@ -234,53 +251,88 @@ public class AdminServerImpl implements AdminServer {
 
 	@Override
 	public String requestUserAcc(String user, String pw) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		boolean goodName = !passwords.containsKey(user);
+		if (!goodName)
+			return "FAILURE: DUPLICATE USERNAMD";
+		pRequests.add(user);
+		byte[] salt = new byte[10];
+		generator.nextBytes(salt);
+		String[] stuff = { salt.toString(), hash(salt.toString() + pw) };
+		passwords.put(user, stuff);
+		return "SUCCESS";
 	}
 
 	@Override
 	public String requestAdminAcc(String user, String pw)
 			throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		boolean goodName = !passwords.containsKey(user);
+		if (!goodName)
+			return "FAILURE: DUPLICATE USERNAMD";
+		aRequests.add(user);
+		byte[] salt = new byte[10];
+		generator.nextBytes(salt);
+		String[] stuff = { salt.toString(), hash(salt.toString() + pw) };
+		passwords.put(user, stuff);
+		return "SUCCESS";
 	}
 
 	@Override
 	public PlayerServer getPlayerServer(String user, String pw)
 			throws RemoteException {
-		// TODO Auto-generated method stub
+		if(players.contains(user))
+			if(testValidLogin(user, pw))
+				return (PlayerServer) users.get(user);
 		return null;
 	}
 
 	@Override
 	public AdminServer getAdminServer(String user, String pw)
 			throws RemoteException {
-		// TODO Auto-generated method stub
+		if(admins.contains(user))
+			if(testValidLogin(user, pw))
+				return (AdminServer) users.get(user);
 		return null;
+	}
+
+	private boolean testValidLogin(String user, String pw) {
+		String[] stuff = passwords.get(user);
+		if (stuff == null)
+			return false;
+
+		String pass = hash(stuff[0] + pw);
+		
+		return(pass.equals(stuff[1]));
 	}
 
 	@Override
 	public int[] getSpeciesAttributes(int species_id) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		return w.getSpecies(species_id).getSpeciesAttributes();
 	}
 
 	@Override
 	public String getSpeciesProgram(int species_id) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuffer sb = new StringBuffer();
+
+		w.getSpecies(species_id).getSpeciesProgram().prettyPrint(sb);
+
+		return sb.toString();
 	}
 
 	@Override
 	public int[] getLineage(int species_id) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<RemoteSpecies> lin = w.getSpecies(species_id).getLineage();
+		int[] l = new int[lin.size()];
+
+		for (int i = 0; i < l.length; i++) {
+			l[l.length - i - 1] = w.species.indexOf(lin.get(i));
+		}
+
+		return l;
 	}
 
 	@Override
 	public void loadWorld(String worldFileContent) throws RemoteException {
-		// TODO Auto-generated method stub
-
+		w = Interpreter.importWorld(worldFileContent);
 	}
 
 	@Override
@@ -300,8 +352,13 @@ public class AdminServerImpl implements AdminServer {
 
 	@Override
 	public void resetSim() throws RemoteException {
-		// TODO Auto-generated method stub
-
+		ArrayList<Critter> c = new ArrayList<Critter>();
+		for(Inhabitant i : w.getInhabitants()) {
+			if (i instanceof Critter)
+				c.add((Critter) i);
+		}
+		
+		w.getInhabitants().removeAll(c);
 	}
 
 	@Override
@@ -312,110 +369,113 @@ public class AdminServerImpl implements AdminServer {
 
 	@Override
 	public void killAll() throws RemoteException {
-		// TODO Auto-generated method stub
-
+		for (Inhabitant i : w.getInhabitants()) {
+			if (i instanceof Critter)
+				((Critter) i).die();
+		}
 	}
 
 	@Override
-	public void kill(int id) throws RemoteException {
+	public void kill(int id) throws RemoteException, IncorrectIDException {
 		Critter c = getCritter(id);
-		// TODO
+		c.die();
 	}
 
 	@Override
 	public void control(RemoteCritter critter, Action a) throws RemoteException {
-		// TODO Auto-generated method stub
-
+		if(critter instanceof Critter)
+			w.setSelectedInhabitant((Critter) critter);	//will always be the case; impossible to have a non-Critter RemoteCritter
+		
+		w.setAction(actionToInt(a));
 	}
 
 	@Override
 	public boolean uploadsOn() throws RemoteException {
-		// TODO Auto-generated method stub
-		return false;
+		return uploads;
 	}
 
 	@Override
 	public void setCritterUploads(boolean on) throws RemoteException {
-		// TODO Auto-generated method stub
-
+		uploads = on;
 	}
 
 	@Override
 	public boolean downloadsOn() throws RemoteException {
-		// TODO Auto-generated method stub
-		return false;
+		return downloads;
 	}
 
 	@Override
 	public void setCritterDownloads(boolean on) throws RemoteException {
-		// TODO Auto-generated method stub
-
+		downloads = on;
 	}
 
 	@Override
 	public String[] listCritterFiles() throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		return critterFiles.toArray(new String[0]);
 	}
 
 	@Override
 	public String[] getPlayerList() throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		return players.toArray(new String[0]);
 	}
 
 	@Override
 	public String[] getPlayerRequests() throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		return pRequests.toArray(new String[0]);
 	}
 
 	@Override
 	public void addPlayer(String name) throws RemoteException {
-		// TODO Auto-generated method stub
-
+		if (pRequests.remove(name)) {
+			players.add(name);
+			PlayerServer p = new AdminServerImpl(w, name);
+			users.put(name, p);
+		}
 	}
 
 	@Override
 	public void rejectPlayer(String name) throws RemoteException {
-		// TODO Auto-generated method stub
-
+		pRequests.remove(name);
+		passwords.remove(name);
 	}
 
 	@Override
 	public void removePlayer(String name) throws RemoteException {
-		// TODO Auto-generated method stub
-
+		players.remove(name);
+		passwords.remove(name);
+		users.remove(name);
 	}
 
 	@Override
 	public String[] getAdminList() throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		return admins.toArray(new String[0]);
 	}
 
 	@Override
 	public String[] getAdminRequests() throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		return aRequests.toArray(new String[0]);
 	}
 
 	@Override
 	public void addAdmin(String name) throws RemoteException {
-		// TODO Auto-generated method stub
-
+		if (aRequests.remove(name)) {
+			admins.add(name);
+			AdminServer a = new AdminServerImpl(w, name);
+			users.put(name, a);
+		}
 	}
 
 	@Override
 	public void rejectAdmin(String name) throws RemoteException {
-		// TODO Auto-generated method stub
-
+		aRequests.remove(name);
+		passwords.remove(name);
 	}
 
 	@Override
 	public void removeAdmin(String name) throws RemoteException {
-		// TODO Auto-generated method stub
-
+		admins.remove(name);
+		passwords.remove(name);
+		users.remove(name);
 	}
 
 	private Critter getCritter(int id) throws IncorrectIDException {
@@ -424,5 +484,57 @@ public class AdminServerImpl implements AdminServer {
 			throw new IncorrectIDException();
 
 		return (Critter) p;
+	}
+
+	@Override
+	public String getUsername() {
+		return username;
+	}
+
+	private String hash(String s) {
+		int i = s.hashCode();
+		return Integer.toHexString(i);
+	}
+	
+	private int actionToInt(Action action) {
+		int a;
+
+		switch (action) {
+		case FORWARD:
+			a = 1;
+			break;
+		case BACKWARD:
+			a = 2;
+			break;
+		case LEFT:
+			a = 3;
+			break;
+		case RIGHT:
+			a = 4;
+			break;
+		case EAT:
+			a = 5;
+			break;
+		case ATTACK:
+			a = 6;
+			break;
+		case GROW:
+			a = 8;
+			break;
+		case BUD:
+			a = 9;
+			break;
+		case MATE:
+			a = 10;
+			break;
+		case TAG:
+			a = 7;
+			break;
+		default:
+			a = 0;
+			break;
+		}
+		
+		return a;
 	}
 }

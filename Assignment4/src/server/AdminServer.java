@@ -61,8 +61,9 @@ public interface AdminServer extends PlayerServer {
 	 * Remove the specified critter from the world.
 	 * @param id Critter ID
 	 * @throws RemoteException
+	 * @throws IncorrectIDException 
 	 */
-	public void kill(int id) throws RemoteException;
+	public void kill(int id) throws RemoteException, IncorrectIDException;
 
 	/**
 	 * Set an action a critter should take, overriding regular behavior.

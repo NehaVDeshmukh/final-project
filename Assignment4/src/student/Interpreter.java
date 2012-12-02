@@ -6,13 +6,17 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import server.Critter;
 import server.InsufficientEnergyException;
 import server.Location;
 import server.Plant;
+import server.RemoteCritterImpl;
+import server.RemoteSpecies;
 import server.Rock;
+import server.Species;
 import server.World;
 
 
@@ -60,9 +64,39 @@ public class Interpreter {
 
 		return w;
 	}
+	
+	public static World importWorld(String s){
+		Scanner r = new Scanner(s);
+		String[] l;
+
+		World w = new World(22, 21);
+
+		while (r.hasNext()) {
+			l = r.nextLine().split(" ");
+			if (l[1].equals("plant")) {
+				w.addInhabitant(new Plant(new Location(Integer.parseInt(l[3]),
+						Integer.parseInt(l[2]))));
+			} else if (l[1].equals("rock")) {
+				w.addInhabitant(new Rock(new Location(Integer.parseInt(l[3]),
+						Integer.parseInt(l[2]))));
+			} else if (l[1].equals("critter")) {
+				Critter c;
+				try {
+					c = importCritter(new File(l[2]));
+					c.setLocation(Integer.parseInt(l[3]), Integer.parseInt(l[4]));
+					c.setDirection(Integer.parseInt(l[5]));
+					w.addInhabitant(c);
+				} catch (FileNotFoundException e) {
+					System.out.println("Critter not found: " + l[2]);
+				}			
+			}
+		}
+
+		return w;
+	}
 
 	public static Critter importCritter(File f) throws FileNotFoundException {
-		Critter c;
+		RemoteCritterImpl c;
 		int[] m;
 		String[] l;
 		int i;
@@ -84,9 +118,10 @@ public class Interpreter {
 					m[8] = Integer.parseInt(l[l.length - 1]);
 			}
 			try {
-				c = new Critter(m, null);
+				c = new RemoteCritterImpl(m, null);
 				Program p = ParserFactory.getParser().parse(r);
 				c.addProgram(p);
+				c.setSpecies(new Species(new ArrayList<RemoteSpecies>(), new int[] {c.getVal(0), c.getVal(1), c.getVal(2)}, p));
 			} catch (Exception e) {
 				c = null;
 			}
@@ -97,7 +132,7 @@ public class Interpreter {
 	}
 	
 	public static Critter importCritter(String s){
-		Critter c;
+		RemoteCritterImpl c;
 		int[] m;
 		String[] l;
 		int i;
@@ -119,7 +154,7 @@ public class Interpreter {
 					m[8] = Integer.parseInt(l[l.length - 1]);
 			}
 			try {
-				c = new Critter(m, null);
+				c = new RemoteCritterImpl(m, null);
 				Program p = ParserFactory.getParser().parse(r);
 				c.addProgram(p);
 			} catch (Exception e) {
