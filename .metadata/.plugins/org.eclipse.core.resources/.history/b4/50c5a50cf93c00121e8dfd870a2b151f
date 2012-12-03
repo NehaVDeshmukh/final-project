@@ -15,7 +15,7 @@ public class CritterListener implements ActionListener {
 	public void actionPerformed(ActionEvent a) {
 		if (a.getSource().equals(gui.wait)) {
 			gui.c.world.setWait(true);
-		} else if (a.getSource().equals(gui.rules)) {
+		} else if (a.getSource().equals(gui.random)) {
 			gui.c.world.setWait(false);
 		} else if (a.getSource().equals(gui.chooser)) {
 			int action = gui.chooser.getSelectedIndex();

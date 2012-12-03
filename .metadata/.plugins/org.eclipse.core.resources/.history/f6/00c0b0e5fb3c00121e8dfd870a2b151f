@@ -70,7 +70,7 @@ public class GUI extends JPanel {
 		try {
 			c = new WorldCanvas(700, 500, original.maxColumn(),
 					original.maxRow());
-		} catch (Exception e) {
+		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			c = new WorldCanvas();
 		}
@@ -177,8 +177,7 @@ public class GUI extends JPanel {
 							approveU.addActionListener(new ActionListener() {
 								public void actionPerformed(ActionEvent e) {
 									try {
-										s.addPlayer(JOptionPane
-												.showInputDialog("Player's username:"));
+										s.addPlayer(JOptionPane.showInputDialog("Player's username:"));
 									} catch (HeadlessException e1) {
 										// TODO Auto-generated catch block
 									} catch (RemoteException e1) {
@@ -189,8 +188,7 @@ public class GUI extends JPanel {
 							makeAdmin.addActionListener(new ActionListener() {
 								public void actionPerformed(ActionEvent e) {
 									try {
-										s.addAdmin(JOptionPane
-												.showInputDialog("Player's username:"));
+										s.addAdmin(JOptionPane.showInputDialog("Player's username:"));
 									} catch (HeadlessException e1) {
 										// TODO Auto-generated catch block
 									} catch (RemoteException e1) {
@@ -201,8 +199,7 @@ public class GUI extends JPanel {
 							removeAdmin.addActionListener(new ActionListener() {
 								public void actionPerformed(ActionEvent e) {
 									try {
-										s.removeAdmin(JOptionPane
-												.showInputDialog("Player's username:"));
+										s.removeAdmin(JOptionPane.showInputDialog("Player's username:"));
 									} catch (HeadlessException e1) {
 										// TODO Auto-generated catch block
 									} catch (RemoteException e1) {
@@ -213,8 +210,7 @@ public class GUI extends JPanel {
 							denyU.addActionListener(new ActionListener() {
 								public void actionPerformed(ActionEvent e) {
 									try {
-										s.rejectPlayer(JOptionPane
-												.showInputDialog("Player's username:"));
+										s.rejectPlayer(JOptionPane.showInputDialog("Player's username:"));
 									} catch (HeadlessException e1) {
 										// TODO Auto-generated catch block
 									} catch (RemoteException e1) {
@@ -222,21 +218,13 @@ public class GUI extends JPanel {
 									}
 								}
 							});
-
-							f.pack();
-							f.setVisible(true);
 						}
 					});
-
-					pr.pack();
-					pr.setVisible(true);
 				} catch (RemoteException e1) {
 					// TODO
 				}
 			}
 		});
-		
-		outer = new JPanel();
 
 		outer.add(left);
 		outer.add(rightView);

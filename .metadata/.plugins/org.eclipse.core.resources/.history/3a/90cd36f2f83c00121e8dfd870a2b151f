@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
@@ -49,7 +48,7 @@ public class GUI extends JPanel {
 	private JLabel statsLbl;
 	JLabel size, complexity, offense, defense, thisTag, posture, events,
 			actionLbl, windowLbl, rateLbl;
-	JButton zIn, zOut, time, newWorld, addCritter, showRule, restart,
+	private JButton zIn, zOut, time, newWorld, addCritter, showRule, restart,
 			uploadParams, logout, uploads, downloads, login, createAccount,
 			manageUsers, adminPriveledges;
 	JComboBox chooser;
@@ -70,7 +69,7 @@ public class GUI extends JPanel {
 		try {
 			c = new WorldCanvas(700, 500, original.maxColumn(),
 					original.maxRow());
-		} catch (Exception e) {
+		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			c = new WorldCanvas();
 		}
@@ -108,135 +107,12 @@ public class GUI extends JPanel {
 		rightAdmin.add(logoutPanel);
 		adminPriveledges = new JButton("Access Admin Priveledges");
 		rightAdmin.add(adminPriveledges);
-		adminPriveledges.addActionListener(new ActionListener() {
+		adminPriveledges.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				try {
-					JFrame pr = new JFrame();
-					JPanel stuff = new JPanel(new GridLayout(5, 1));
-					restart = new JButton("Reset Simulation");
-					uploadParams = new JButton("Change Parameters");
-					uploads = new JButton("Turn "
-							+ (s.uploadsOn() ? "off" : "on") + "uploads");
-					downloads = new JButton("Turn "
-							+ (s.downloadsOn() ? "off" : "on") + "downloads");
-					manageUsers = new JButton("Manage Users");
-					stuff.add(restart);
-					stuff.add(uploadParams);
-					stuff.add(uploads);
-					stuff.add(downloads);
-					stuff.add(manageUsers);
-					pr.add(stuff);
-					restart.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent e) {
-							try {
-								s.resetSim();
-							} catch (RemoteException e1) {
-								// TODO Auto-generated catch block
-							}
-						}
-					});
-					uploadParams.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent e) {
-							file.showOpenDialog(null);
-						}
-					});
-					uploads.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent e) {
-							try {
-								s.setCritterUploads(!(s.uploadsOn()));
-							} catch (RemoteException e1) {
-								// TODO Auto-generated catch block
-							}
-						}
-					});
-					downloads.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent e) {
-							try {
-								s.setCritterDownloads(!(s.downloadsOn()));
-							} catch (RemoteException e1) {
-								// TODO Auto-generated catch block
-							}
-						}
-					});
-					manageUsers.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent e) {
-							JButton approveU = new JButton(
-									"Approve User Request");
-							JButton makeAdmin = new JButton(
-									"Make User Administrator");
-							JButton removeAdmin = new JButton(
-									"Remove Administrator");
-							JButton denyU = new JButton("Deny User Request");
-							JPanel bu = new JPanel(new GridLayout(4, 1));
-							bu.add(approveU);
-							bu.add(makeAdmin);
-							bu.add(removeAdmin);
-							bu.add(denyU);
-							JFrame f = new JFrame();
-							f.add(bu);
-							approveU.addActionListener(new ActionListener() {
-								public void actionPerformed(ActionEvent e) {
-									try {
-										s.addPlayer(JOptionPane
-												.showInputDialog("Player's username:"));
-									} catch (HeadlessException e1) {
-										// TODO Auto-generated catch block
-									} catch (RemoteException e1) {
-										// TODO Auto-generated catch block
-									}
-								}
-							});
-							makeAdmin.addActionListener(new ActionListener() {
-								public void actionPerformed(ActionEvent e) {
-									try {
-										s.addAdmin(JOptionPane
-												.showInputDialog("Player's username:"));
-									} catch (HeadlessException e1) {
-										// TODO Auto-generated catch block
-									} catch (RemoteException e1) {
-										// TODO Auto-generated catch block
-									}
-								}
-							});
-							removeAdmin.addActionListener(new ActionListener() {
-								public void actionPerformed(ActionEvent e) {
-									try {
-										s.removeAdmin(JOptionPane
-												.showInputDialog("Player's username:"));
-									} catch (HeadlessException e1) {
-										// TODO Auto-generated catch block
-									} catch (RemoteException e1) {
-										// TODO Auto-generated catch block
-									}
-								}
-							});
-							denyU.addActionListener(new ActionListener() {
-								public void actionPerformed(ActionEvent e) {
-									try {
-										s.rejectPlayer(JOptionPane
-												.showInputDialog("Player's username:"));
-									} catch (HeadlessException e1) {
-										// TODO Auto-generated catch block
-									} catch (RemoteException e1) {
-										// TODO Auto-generated catch block
-									}
-								}
-							});
-
-							f.pack();
-							f.setVisible(true);
-						}
-					});
-
-					pr.pack();
-					pr.setVisible(true);
-				} catch (RemoteException e1) {
-					// TODO
-				}
-			}
+				JFrame pr = new JFrame();
+				restart
+			}	
 		});
-		
-		outer = new JPanel();
 
 		outer.add(left);
 		outer.add(rightView);
@@ -273,7 +149,7 @@ public class GUI extends JPanel {
 				}
 			}
 		});
-
+		
 		createAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String u = JOptionPane.showInputDialog(loginPanel, "Username:",
@@ -292,7 +168,7 @@ public class GUI extends JPanel {
 		logoutPanel = new JPanel();
 		logout = new JButton("Logout");
 		logoutPanel.add(logout);
-
+		
 		logout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				outer.remove(1);

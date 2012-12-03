@@ -235,8 +235,6 @@ public class GUI extends JPanel {
 				}
 			}
 		});
-		
-		outer = new JPanel();
 
 		outer.add(left);
 		outer.add(rightView);

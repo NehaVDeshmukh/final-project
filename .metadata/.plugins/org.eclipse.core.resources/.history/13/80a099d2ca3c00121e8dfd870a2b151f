@@ -1,0 +1,9 @@
+package gui;
+
+public class UserGUI extends GUI {
+
+	public UserGUI() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

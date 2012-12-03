@@ -70,7 +70,7 @@ public class GUI extends JPanel {
 		try {
 			c = new WorldCanvas(700, 500, original.maxColumn(),
 					original.maxRow());
-		} catch (Exception e) {
+		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			c = new WorldCanvas();
 		}
@@ -235,8 +235,6 @@ public class GUI extends JPanel {
 				}
 			}
 		});
-		
-		outer = new JPanel();
 
 		outer.add(left);
 		outer.add(rightView);
