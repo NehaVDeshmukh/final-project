@@ -2,8 +2,6 @@ package student.util;
 
 import java.util.concurrent.BlockingQueue;
 
-import student.RingBuffer;
-
 public class RingBufferFactory<T> {
 
 	/**
@@ -13,7 +11,8 @@ public class RingBufferFactory<T> {
 	 * @return a new synchronized ring buffer
 	 */
 	public BlockingQueue<T> getSynchronizedBuffer(int capacity){
-		return new RingBuffer<T>(capacity); 
+		// DO NOT CHANGE HEADER (addition or deletion)
+		return null; //TODO implement
 	}
 
 }
